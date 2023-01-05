@@ -1,68 +1,76 @@
 <p>Randomly generated number is: </p>
 <div class="container-fluid">
-  <div class="col-4"></div>
-  <div class="col-4">
-    <table class="table table-sm">
-      <thead>
-        <tr class="table-warning">
-          <th>Attempt</th>
-          <th>Feedbacks</th>
+  <!-- <div *ngIf="!isGameStart">
+    <p>Enter username</p>
+    <input type="text"/>
+    <button class="btn btn-secondary" (click)="startGame()">Start Game</button>
+  </div> -->
+    <div class="col-3">
+      <button class="button d-flex justify-content-end">Start a new game</button>
+    </div>
+    <div class="col-6 d-flex justify-content-center">
 
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><select>
-              <option value=""></option>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-            </select>
-            <select>
-              <option value=""></option>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-            </select>
-            <select>
-              <option value=""></option>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-            </select>
-            <select>
-              <option value=""></option>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-            </select>
-          </td>
-          <td></td>
-        </tr>
-      </tbody>
+      <table class="table table-sm">
+        <thead>
+          <tr class="table-warning">
+            <th>Attempt</th>
+            <th>Feedbacks</th>
 
-    </table>
-  </div>
-  <div class="col-4"></div>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><select>
+                <option value=""></option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+              <select>
+                <option value=""></option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+              <select>
+                <option value=""></option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+              <select>
+                <option value=""></option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+              <button class="btn btn-warning btn-sm">check</button>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
 
+      </table>
+    </div>
+    <div class="col-3"></div>
 </div>
