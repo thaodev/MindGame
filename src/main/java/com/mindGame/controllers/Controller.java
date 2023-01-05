@@ -26,7 +26,7 @@ public class Controller {
 	private static List<Game> listOfGames = new ArrayList<>();
 	
 	private static Map<Game, List<Attempt>> outcome = new HashMap<>();
-	List<Attempt> attempts = new ArrayList<>();
+	//List<Attempt> attempts = new ArrayList<>();
 	
 	@RequestMapping("/hello")
 	public String hello() {
@@ -49,6 +49,8 @@ public class Controller {
 		Game newGame = new Game(arrOfNum);
 		
 		listOfGames.add(newGame);
+		List<Attempt> att = new ArrayList<>();
+		outcome.put(newGame, att);
 		
 		System.out.println("game id: " + newGame.getGameId());
 		System.out.println(Arrays.toString(newGame.getTarget()));
@@ -70,8 +72,7 @@ public class Controller {
 		}
 		// create new attempt
 		Attempt newAttempt = new Attempt(gameId, playerGuess );
-		attempts.add(newAttempt);
-		outcome.put(game, attempts);
+		outcome.get(game).add(newAttempt);
 		
 		// Compare attempt's guess vs target array
 		if (target.length != playerGuess.length) return "{you cheated!}";
@@ -87,6 +88,9 @@ public class Controller {
 				countCorrectLocation++;
 			}
 		}
+		// Get number of past attempts by game id
+		// Else If the number of attempt reach max allowed
+		if(outcome.get(game).size() > 3) return "{You lose}";
 		// If the use get it right
 		if (countCorrectLocation == target.length) {
 			return "{You Won}";
@@ -98,12 +102,13 @@ public class Controller {
 		}
 		// Get current 
 		
-		// Get number of past attempts by game id
-		// Else If the number of attempt reach max allowed
-		if(outcome.get(game).size() > 10) return "{You lose}";
+		
+		if (countCorrectGuess == 0 && countCorrectLocation == 0) {
+			return "{all incorrect}";
+		}
 		
 		// Else Return result
 		
-		return "{ correct_nums = "+ countCorrectGuess +", correct_count = + " + countCorrectLocation+ " }";
+		return "{ correct_nums = "+ countCorrectGuess +", correct_count = " + countCorrectLocation+ " }";
 	}
 }
