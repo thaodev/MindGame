@@ -1,10 +1,12 @@
 package com.mindGame.model;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public class Game {
 	private String gameId;
 	private int[] target;
+	//private int maxAttempt;
 	
 	
 	
@@ -26,6 +28,13 @@ public class Game {
 
 	public void setTarget(int[] target) {
 		this.target = target;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Game [gameId=" + gameId + "]";
 	}
 	
 	

@@ -7,12 +7,10 @@ public class Player {
 	
 	private String playerId;
 	private String username;
-	private Attempt[] attempt;
 	
 	public Player(String username) {
 		this.playerId = UUID.randomUUID().toString();
 		this.username = username;
-		this.attempt = new Attempt[10];
 	}
 
 	public String getPlayerId() {

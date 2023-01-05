@@ -4,27 +4,25 @@ import java.util.UUID;
 
 public class Attempt {
 	private String attemptId;
-	private Game game;
+	private String gameId;
 	private int[] guess;
-	private Player player;
 	
 	
-	public Attempt(Game game, int[] guess, Player player) {
+	public Attempt(String gameId, int[] guess) {
 		this.attemptId = UUID.randomUUID().toString();
-		this.game = game;
+		this.gameId = gameId;
 		this.guess = guess;
-		this.player = player;
 	}
 
 	public String getAttemptId() {
 		return attemptId;
 	}
 	
-	public Game getGame() {
-		return game;
+	public String getGame() {
+		return gameId;
 	}
-	public void setGame(Game game) {
-		this.game = game;
+	public void setGame(String gameId) {
+		this.gameId = gameId;
 	}
 	public int[] getGuess() {
 		return guess;
@@ -33,13 +31,7 @@ public class Attempt {
 		this.guess = guess;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+	
 	
 	
 	
