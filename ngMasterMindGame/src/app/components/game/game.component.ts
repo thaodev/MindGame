@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-game',
@@ -13,7 +14,7 @@ export class GameComponent implements OnInit {
   digit4: any;
   guess : number[] | null = null;
   gameId: String | null = null;
-  constructor() {
+  constructor(private gameService: GameService) {
 
    }
 
@@ -24,12 +25,23 @@ export class GameComponent implements OnInit {
     this.guess?.push(this.digit4);
   }
 
-  startGame(){
-    this.isNewGame = true;
+
+  startGame() {
+    this.gameService.index().subscribe({
+      next: (gameId) => {
+        this.gameId = gameId;
+        console.log(gameId);
+
+      },
+      error: (problem) => {
+        console.error(
+          'GameComponent.checkAttempt(): error creating attempt'
+        );
+        console.error(problem);
+      },
+    });
   }
 
-  checkAttempt() {
 
-  }
 
 }
