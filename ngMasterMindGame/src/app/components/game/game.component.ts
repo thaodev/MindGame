@@ -36,9 +36,11 @@ export class GameComponent implements OnInit {
     return new Array(this.size);
   }
   startGame(size: number) {
+    this.guess = [];
+    console.warn("current guess: " + this.guess)
     this.size = size;
     this.array = [];
-    console.log('size after clicking startGame' + size);
+    console.log('size after clicking startGame: ' + size);
     this.retrieveGameId();
     //this.counter();
     for (let i = 1; i <= size; i++) {
@@ -59,7 +61,7 @@ export class GameComponent implements OnInit {
     });
   }
 
-  onKeyUp(digit: any){
+  getData(digit: any){
     console.warn("player picked" + digit);
     this.guess.push(digit);
     console.log("guess size: " + this.guess.length);
@@ -68,7 +70,5 @@ export class GameComponent implements OnInit {
     console.log("player guess " + this.guess);
   }
 
-  getData(digit:any) {
-    console.warn("test key up: " + digit);
-  }
+
 }
