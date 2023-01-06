@@ -35,10 +35,10 @@ public class Controller {
 	}
 	
 	
-	@GetMapping(value = "/games")
-	private String createNewGame() {
+	@GetMapping(value = "/games/{num}")
+	private Game createNewGame(@PathVariable int num) {
 		
-		String url = "https://www.random.org/integers/?num=4&min=0&max=7&col=1&base=10&format=plain&rnd=new";
+		String url = "https://www.random.org/integers/?num=" +num+"&min=0&max=7&col=1&base=10&format=plain&rnd=new";
 		RestTemplate restTemplate = new RestTemplate();
 		String numbers = restTemplate.getForObject(url, String.class);
 		String[] arr = numbers.split("\n");
@@ -56,12 +56,15 @@ public class Controller {
 		System.out.println("game id: " + newGame.getGameId());
 		System.out.println(Arrays.toString(newGame.getTarget()));
 		
-		return "{\"game_id\":\"" + newGame.getGameId() + "\"}";
+		//return "{\"game_id\":\"" + newGame.getGameId() + "\"}";
+		//return "{\"" + newGame.getGameId() + "\"}";
+		return newGame;
 	}
 	
 	@PostMapping(value="/games/{gameId}/attempts")
-	private String attempt(@PathVariable String gameId,@RequestBody int[] playerGuess ) {
-		
+	private Attempt attempt(@PathVariable String gameId,@RequestBody int[] playerGuess ) {
+		System.out.println(Arrays.toString(playerGuess));
+		String feedback = "";
 		// Get target array by game id
 		int[] target = new int[4];
 		Game game = null;
@@ -76,7 +79,7 @@ public class Controller {
 		outcome.get(game).add(newAttempt);
 		
 		// Compare attempt's guess vs target array
-		if (target.length != playerGuess.length) return "{you cheated!}";
+		if (target.length != playerGuess.length) feedback= "you cheated!";
 		Map<Integer, Integer> map1 = new LinkedHashMap<>();
 		Map<Integer, Integer> map2 = new LinkedHashMap<>();
 		int countCorrectLocation = 0;
@@ -91,10 +94,10 @@ public class Controller {
 		}
 		// Get number of past attempts by game id
 		// Else If the number of attempt reach max allowed
-		if(outcome.get(game).size() > 3) return "{You lose}";
+		if(outcome.get(game).size() > 3) feedback= "You lose";
 		// If the use get it right
 		if (countCorrectLocation == target.length) {
-			return "{You Won}";
+			feedback =  "You Won";
 		}
 		for (int i : map2.keySet()) {
 			if (map1.containsKey(i)) {
@@ -105,11 +108,13 @@ public class Controller {
 		
 		
 		if (countCorrectGuess == 0 && countCorrectLocation == 0) {
-			return "{all incorrect}";
+			feedback =  "all incorrect";
 		}
 		
 		// Else Return result
 		
-		return "{ correct_nums = "+ countCorrectGuess +", correct_count = " + countCorrectLocation+ " }";
+		feedback = "correct_nums = "+ countCorrectGuess +", correct_count = " + countCorrectLocation;
+		newAttempt.setFeedback(feedback);
+		return newAttempt;
 	}
 }
