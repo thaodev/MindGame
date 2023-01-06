@@ -5,22 +5,44 @@
     <input type="text"/>
     <button class="btn btn-secondary" (click)="startGame()">Start Game</button>
   </div> -->
-    <div class="col-3">
-      <button class="button d-flex justify-content-end" (click)="startGame()">Start a new game</button>
-    </div>
-    <div class="col-6 d-flex justify-content-center">
+  <div class="col-3">
+    <select name="size" [(ngModel)]="size">
+      <option value="4">4</option>
+      <option value="6">6</option>
+      <option value="8">8</option>
 
-      <table class="table table-sm">
-        <thead>
-          <tr class="table-warning">
-            <th>Attempt</th>
-            <th>Feedbacks</th>
+    </select>
+    <button class="button d-flex justify-content-end" (click)="startGame(size)">Start a new game</button>
+  </div>
+  <div class="col-6 d-flex justify-content-center">
 
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><select>
+    <table class="table table-sm">
+      <thead>
+        <tr class="table-warning">
+          <th>Attempt</th>
+          <th>Feedbacks</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div >
+              <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2">
+              <select *ngFor="let digit of array" [value]="digit" name="digit" >
+                <option value=""></option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+            </form>
+            </div>
+            <!-- <select>
                 <option value=""></option>
                 <option value="0">0</option>
                 <option value="1">1</option>
@@ -52,25 +74,14 @@
                 <option value="5">5</option>
                 <option value="6">6</option>
                 <option value="7">7</option>
-              </select>
-              <select>
-                <option value=""></option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-              <button class="btn btn-warning btn-sm">check</button>
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
+              </select> -->
+            <button class="btn btn-warning btn-sm">check</button>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
 
-      </table>
-    </div>
-    <div class="col-3"></div>
+    </table>
+  </div>
+  <div class="col-3"></div>
 </div>
