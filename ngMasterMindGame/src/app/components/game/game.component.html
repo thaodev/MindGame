@@ -28,14 +28,14 @@
         <tr>
           <td>
             <div >
-              <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2">
+              <!-- <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2"> -->
               <select type= "number" *ngFor="let box of array" #box1 (blur)="getData(box1.value)" name="box">
               <!-- <select type= "number" *ngFor="let box of array"  name="box"> -->
                 <option value=""></option>
                 <option  *ngFor="let i of range" [value]="i">{{i}}</option>
 
               </select>
-            </form>
+            <!-- </form> -->
             <!-- <select type="number" #box2 (blur)="getData(box2.value)">
               <option value="3">3</option>
               <option value="4">4</option>
