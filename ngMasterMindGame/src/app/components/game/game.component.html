@@ -29,53 +29,20 @@
           <td>
             <div >
               <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2">
-              <select *ngFor="let digit of array" [value]="digit" name="digit" >
+              <select type= "number" *ngFor="let box of array" #box1 (blur)="onKeyUp(box1.value)" name="box">
+              <!-- <select type= "number" *ngFor="let box of array"  name="box"> -->
                 <option value=""></option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
+                <option  *ngFor="let i of range" [value]="i">{{i}}</option>
+
               </select>
             </form>
+            <select type="number" #box2 (blur)="getData(box2.value)">
+              <option value="3">3</option>
+              <option value="4">4</option>
+              </select>
             </div>
-            <!-- <select>
-                <option value=""></option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-              <select>
-                <option value=""></option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select>
-              <select>
-                <option value=""></option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-              </select> -->
-            <button class="btn btn-warning btn-sm">check</button>
+
+            <button class="btn btn-warning btn-sm" (click)="checkAttempt()">check</button>
           </td>
           <td></td>
         </tr>
