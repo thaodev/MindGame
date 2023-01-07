@@ -25,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr *ngFor="let attempt of attemptArr">
           <td>
             <div >
               <!-- <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2"> -->
@@ -36,15 +36,13 @@
 
               </select>
             <!-- </form> -->
-            <!-- <select type="number" #box2 (blur)="getData(box2.value)">
-              <option value="3">3</option>
-              <option value="4">4</option>
-              </select> -->
+
             </div>
 
             <button class="btn btn-warning btn-sm" (click)="checkAttempt()">check</button>
           </td>
-          <td>{{feedback}}</td>
+          <td *ngIf="attempt">{{attempt.feedback}}</td>
+          <!-- <td></td> -->
         </tr>
       </tbody>
 

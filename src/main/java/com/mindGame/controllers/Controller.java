@@ -21,48 +21,47 @@ import com.mindGame.model.Game;
 
 @RestController
 @RequestMapping("api")
-@CrossOrigin({ "*", "http://localhost:4200/" })
+@CrossOrigin({ "*", "http://localhost:4201/" })
 public class Controller {
-	
+
 	private static List<Game> listOfGames = new ArrayList<>();
-	
+
 	private static Map<Game, List<Attempt>> outcome = new HashMap<>();
-	//List<Attempt> attempts = new ArrayList<>();
-	
+	// List<Attempt> attempts = new ArrayList<>();
+
 	@RequestMapping("/hello")
 	public String hello() {
 		return "Hello thao";
 	}
-	
-	
+
 	@GetMapping(value = "/games/{num}")
 	private Game createNewGame(@PathVariable int num) {
-		
-		String url = "https://www.random.org/integers/?num=" +num+"&min=0&max=7&col=1&base=10&format=plain&rnd=new";
+
+		String url = "https://www.random.org/integers/?num=" + num + "&min=0&max=7&col=1&base=10&format=plain&rnd=new";
 		RestTemplate restTemplate = new RestTemplate();
 		String numbers = restTemplate.getForObject(url, String.class);
 		String[] arr = numbers.split("\n");
 		int[] arrOfNum = new int[arr.length];
-		for (int i = 0 ; i < arr.length ; i++) {
+		for (int i = 0; i < arr.length; i++) {
 			arrOfNum[i] = Integer.parseInt(arr[i]);
 		}
-		
+
 		Game newGame = new Game(arrOfNum);
-		
+
 		listOfGames.add(newGame);
 		List<Attempt> att = new ArrayList<>();
 		outcome.put(newGame, att);
-		
+
 		System.out.println("game id: " + newGame.getGameId());
 		System.out.println(Arrays.toString(newGame.getTarget()));
-		
-		//return "{\"game_id\":\"" + newGame.getGameId() + "\"}";
-		//return "{\"" + newGame.getGameId() + "\"}";
+
+		// return "{\"game_id\":\"" + newGame.getGameId() + "\"}";
+		// return "{\"" + newGame.getGameId() + "\"}";
 		return newGame;
 	}
-	
-	@PostMapping(value="/games/{gameId}/attempts")
-	private Attempt attempt(@PathVariable String gameId,@RequestBody int[] playerGuess ) {
+
+	@PostMapping(value = "/games/{gameId}/attempts")
+	private Attempt attempt(@PathVariable String gameId, @RequestBody int[] playerGuess) {
 		System.out.println(Arrays.toString(playerGuess));
 		String feedback = "";
 		// Get target array by game id
@@ -75,11 +74,12 @@ public class Controller {
 			}
 		}
 		// create new attempt
-		Attempt newAttempt = new Attempt(gameId, playerGuess );
+		Attempt newAttempt = new Attempt(gameId, playerGuess);
 		outcome.get(game).add(newAttempt);
-		
+
 		// Compare attempt's guess vs target array
-		if (target.length != playerGuess.length) feedback= "you cheated!";
+		if (target.length != playerGuess.length)
+			feedback = "you cheated!";
 		Map<Integer, Integer> map1 = new LinkedHashMap<>();
 		Map<Integer, Integer> map2 = new LinkedHashMap<>();
 		int countCorrectLocation = 0;
@@ -92,29 +92,30 @@ public class Controller {
 				countCorrectLocation++;
 			}
 		}
-		// Get number of past attempts by game id
-		// Else If the number of attempt reach max allowed
-		if(outcome.get(game).size() > 3) feedback= "You lose";
-		// If the use get it right
-		if (countCorrectLocation == target.length) {
-			feedback =  "You Won";
-		}
 		for (int i : map2.keySet()) {
 			if (map1.containsKey(i)) {
 				countCorrectGuess += Math.min(map1.get(i), map2.get(i));
-			} 
+			}
 		}
-		// Get current 
-		
-		
-		if (countCorrectGuess == 0 && countCorrectLocation == 0) {
-			feedback =  "all incorrect";
+		// Get number of past attempts by game id
+		// Else If the number of attempt reach max allowed
+		if (outcome.get(game).size() > 10)
+			feedback = "You lose";
+		// If the use get it right
+		else if (countCorrectLocation == target.length) {
+			feedback = "You Won";
 		}
-		
+		// Get current
+		else if (countCorrectGuess == 0 && countCorrectLocation == 0) {
+			feedback = "all incorrect";
+		}
 		// Else Return result
-		
-		feedback = "correct_nums = "+ countCorrectGuess +", correct_count = " + countCorrectLocation;
+
+		else {
+			feedback = "correct_nums = " + countCorrectGuess + ", correct_count = " + countCorrectLocation;
+		}
 		newAttempt.setFeedback(feedback);
+		newAttempt.setGameId(gameId);
 		return newAttempt;
 	}
 }

@@ -19,10 +19,10 @@ public class Attempt {
 		return attemptId;
 	}
 	
-	public String getGame() {
+	public String getGameId() {
 		return gameId;
 	}
-	public void setGame(String gameId) {
+	public void setGameId(String gameId) {
 		this.gameId = gameId;
 	}
 	public int[] getGuess() {
