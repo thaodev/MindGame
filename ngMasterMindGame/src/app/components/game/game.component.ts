@@ -13,10 +13,11 @@ export class GameComponent implements OnInit {
   selectedDigit: any;
   box: any;
   range: number[] = []; //range for 0->7
-  guess : number[] =[];
+  guess: number[] = [];
   //guess: any = [];
-  array: any = []; //number of boxes based on player's choice
-  attemptArr: Attempt[] = new Array(0);//number of attempts that player can have
+  digits: any = []; //number of boxes based on player's choice
+  attemptArr: Attempt[] = []; //number of attempts that player can have
+  attemptCount: number = 1;
 
   gameId: string | any;
   feedback: string | any;
@@ -25,12 +26,13 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.startGame(this.size);
-    this.array = new Array(this.size);
-
+    this.digits = new Array(this.size);
+    console.log('test attemptArr ' + this.attemptArr.length);
     for (let i = 0; i <= 7; i++) {
       this.range.push(i);
     }
-    //console.log("range size " + this.range.length);
+    this.attemptArr = []; //a new array of attempt at each new game;
+    this.attemptArr.push(this.attempt);//add 1st object attempt to array
   }
   counter() {
     console.log('size in counter ' + this.size);
@@ -40,12 +42,13 @@ export class GameComponent implements OnInit {
     this.guess = [];
     console.warn('current guess: ' + this.guess);
     this.size = size;
-    this.array = [];//reset number of boxes after player starting a new game
-    this.attemptArr = new Array(1);//reset array of attempt after each new game;
+    this.digits = []; //reset number of boxes after player starting a new game
+    this.attemptArr = []; //reset array of attempt after each new game;
+    this.attemptArr.push(this.attempt);//add 1st object attempt to array
     console.log('size after clicking startGame: ' + size);
     this.retrieveGameId();
     for (let i = 1; i <= size; i++) {
-      this.array.push('');
+      this.digits.push('');
     }
   }
 
@@ -54,7 +57,7 @@ export class GameComponent implements OnInit {
       next: (game) => {
         this.gameId = game.gameId;
 
-        console.log("response from index: " + this.gameId);
+        console.log('response from index: ' + this.gameId);
         // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
         // console.log(this.gameId.game_id);
       },
@@ -72,10 +75,12 @@ export class GameComponent implements OnInit {
     }
     console.log('guess size: ' + this.guess.length);
   }
-
+  attemptCountFun(i:number){
+    return new Array(i);
+  }
   checkAttempt() {
-    this.attempt ={} as Attempt;
-    if (this.guess.length < this.array.length) {
+    this.attempt = {} as Attempt;
+    if (this.guess.length < this.digits.length) {
       alert('array of guess is incomplete');
     }
     for (let i = 0; i < this.guess.length; i++) {
@@ -84,23 +89,37 @@ export class GameComponent implements OnInit {
       //   alert('number is incomplete');
       // }
     }
-    console.log("player guess"  + this.guess);
+    console.log('player guess' + this.guess);
     this.gameService.checkAttempt(this.gameId, this.guess).subscribe({
       next: (result) => {
         console.log(result);
         console.log(result.feedback);
         this.feedback = result.feedback;
-        this.attempt.feedback = result.feedback;
-        this.attempt.attemptId = result.attemptId;
-        this.attempt.guess = result.guess;
-        this.attempt.gameId = result.gameId;
-        if (this.feedback != "You Won" && this.attemptArr.length < 10) {
-          //this.feedback = "";
-          this.attemptArr.push(this.attempt);
-          console.log(this.attemptArr);
+        if (this.feedback != 'You Won' && this.attemptArr.length < 10) {
+          //console.log(this.attemptArr.length);
+          //console.log(this.attemptArr);
+          if (this.attemptArr.length == 1 && this.attemptArr[0].feedback == null) {
+            this.attemptArr[0].feedback = result.feedback;
+            this.attemptArr[0].attemptId = result.attemptId;
+            this.attemptArr.length++;
           console.log(this.attemptArr.length);
-          console.log(this.attemptArr?.[1]);
-          console.log(this.attemptArr[1].feedback)
+          } else {
+            this.attemptArr.push(result);
+            // for(let att of this.attemptArr) {
+            //   if(att == null) {
+            //     att = result;
+            //     att.feedback = result.feedback;
+            //     att.attemptId = result.attemptId;
+            //   }
+            // }
+
+
+          }
+          this.attemptCount++;
+          // console.log(this.attemptArr);
+          // console.log(this.attemptArr.length);
+          // console.log(this.attemptArr?.[0]);
+          // console.log(this.attemptArr[0].feedback);
         }
         this.guess = [];
       },
@@ -111,6 +130,5 @@ export class GameComponent implements OnInit {
         console.error(nojoy);
       },
     });
-
   }
 }

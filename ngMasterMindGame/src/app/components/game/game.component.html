@@ -15,7 +15,7 @@
     <button class="button d-flex justify-content-end" (click)="startGame(size)">Start a new game</button>
   </div>
   <div class="col-6 d-flex justify-content-center">
-
+  <div><countdown [config]="{ leftTime: 100, format: 'm:s' }"></countdown></div>
     <table class="table table-sm">
       <thead>
         <tr class="table-warning">
@@ -26,19 +26,17 @@
       </thead>
       <tbody>
         <tr *ngFor="let attempt of attemptArr">
-          <td>
+          <td >
             <div >
               <!-- <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2"> -->
-              <select type= "number" *ngFor="let box of array" #box1 (blur)="getData(box1.value)" name="box">
+              <select type= "number" *ngFor="let box of digits" #box1 (blur)="getData(box1.value)" name="box">
               <!-- <select type= "number" *ngFor="let box of array"  name="box"> -->
                 <option value=""></option>
                 <option  *ngFor="let i of range" [value]="i">{{i}}</option>
 
               </select>
             <!-- </form> -->
-
             </div>
-
             <button class="btn btn-warning btn-sm" (click)="checkAttempt()">check</button>
           </td>
           <td *ngIf="attempt">{{attempt.feedback}}</td>
