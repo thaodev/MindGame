@@ -50,8 +50,8 @@
     <p (click)="hintsClicked()">*Hints</p>
     <ul *ngIf="isHintsClicked">
       <li>Sum of total digitis is {{hints.sumDigit}}</li>
-      <li>The 1st digit is even {{hints.isFirstEven}}</li>
-      <li>The 3rd digit divided by there equally {{hints.isThirdDividedByThreeEqually}}</li>
+      <li>The 1st digit is {{hints.isFirstEven === true ? 'even' : 'odd'}}</li>
+      <li>The 3rd digit is {{hints.isThirdDivisibleByThree == true ? '' : 'not'}} divisible by 3 </li>
     </ul>
   </div>
 </div>

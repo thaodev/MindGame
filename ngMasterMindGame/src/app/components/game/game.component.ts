@@ -56,6 +56,7 @@ export class GameComponent implements OnInit {
     for (let i = 1; i <= size; i++) {
       this.digits.push('');
     }
+    this.isHintsClicked = false;
   }
 
   retrieveGameId() {
