@@ -12,10 +12,11 @@
       <option value="8">8</option>
 
     </select>
-    <button class="button d-flex justify-content-end" (click)="startGame(size)">Start a new game</button>
+    <div><countdown #cd [config]="{ leftTime: 600, format: 'm:s' }"></countdown></div>
+    <button class="button d-flex justify-content-end" (click)="startGame(size);cd.restart() ">Start a new game</button>
   </div>
   <div class="col-6 d-flex justify-content-center">
-  <div><countdown [config]="{ leftTime: 100, format: 'm:s' }"></countdown></div>
+
     <table class="table table-sm">
       <thead>
         <tr class="table-warning">
