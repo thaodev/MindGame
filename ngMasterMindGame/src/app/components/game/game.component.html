@@ -13,7 +13,7 @@
       <option value="8">8</option>
 
     </select>
-    <div><countdown #cd [config]="{ leftTime: 600, format: 'm:s' }"></countdown></div>
+    <div><countdown #cd [config]="{ leftTime: timeData, format: 'm:s' }" (event)="handleEvent($event)"></countdown></div>
     <button class="button d-flex justify-content-end" (click)="startGame(size);cd.restart() ">Start a new game</button>
 
     <table class="table table-sm">

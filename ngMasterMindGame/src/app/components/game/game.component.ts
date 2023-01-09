@@ -28,6 +28,8 @@ export class GameComponent implements OnInit {
   isHintsClicked : boolean = false;
 
   hints = {} as Hints;
+  timeData : number = 10;
+  event : any;
   constructor(private gameService: GameService) {}
 
   ngOnInit(): void {
@@ -143,5 +145,14 @@ export class GameComponent implements OnInit {
 
   hintsClicked() {
     this.isHintsClicked = true;
+  }
+
+  handleEvent(event: { action: string; }) {
+    if (event.action == 'done') {
+      alert("You lose");
+      this.timeData = 10;
+      this.startGame(this.size);
+
+    }
   }
 }
