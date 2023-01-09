@@ -1,8 +1,9 @@
 import { Hints } from './../../models/hints';
 import { Attempt } from './../../models/attempt';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/models/game';
+import { CountdownComponent } from 'ngx-countdown';
 
 @Component({
   selector: 'app-game',
@@ -10,6 +11,8 @@ import { Game } from 'src/app/models/game';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
+ //@ViewChild('cd', { static: false }) private countdown: CountdownComponent;
+   //this.countdown.begin();
   isNewGame: boolean = false;
   size: number = 4;
   selectedDigit: any;
@@ -30,6 +33,8 @@ export class GameComponent implements OnInit {
   hints = {} as Hints;
   timeData : number = 10;
   event : any;
+
+
   constructor(private gameService: GameService) {}
 
   ngOnInit(): void {
@@ -47,6 +52,7 @@ export class GameComponent implements OnInit {
     return new Array(this.size);
   }
   startGame(size: number) {
+    this.timeData = 15;
     this.guess = [];
     console.warn('current guess: ' + this.guess);
     this.size = size;
@@ -59,6 +65,8 @@ export class GameComponent implements OnInit {
       this.digits.push('');
     }
     this.isHintsClicked = false;
+    //this.countdown.restart();
+    console.log(this.timeData);
   }
 
   retrieveGameId() {
@@ -150,9 +158,17 @@ export class GameComponent implements OnInit {
   handleEvent(event: { action: string; }) {
     if (event.action == 'done') {
       alert("You lose");
-      this.timeData = 10;
+      // //this.restart('cd');
+      // if (confirm("You lose")) {
+      //   this.timeData = 10;
+      // }
+      {leftTime:this.timeData};
       this.startGame(this.size);
 
     }
+  }
+
+  restart(comp:CountdownComponent){
+    comp.restart();
   }
 }
