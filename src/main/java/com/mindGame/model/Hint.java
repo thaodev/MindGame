@@ -3,7 +3,7 @@ package com.mindGame.model;
 public class Hint {
 	private int sumDigit;
 	private boolean isFirstEven;
-	private boolean isThirdDivideByThreeEqually;
+	private boolean isThirdDividedByThreeEqually;
 	
 	
 	public int getSumDigit() {
@@ -12,17 +12,17 @@ public class Hint {
 	public void setSumDigit(int sumDigit) {
 		this.sumDigit = sumDigit;
 	}
-	public boolean isFirstEven() {
+	public boolean getIsFirstEven() {
 		return isFirstEven;
 	}
-	public void setFirstEven(boolean isFirstEven) {
+	public void setIsFirstEven(boolean isFirstEven) {
 		this.isFirstEven = isFirstEven;
 	}
-	public boolean isThirdDivideByThreeEqually() {
-		return isThirdDivideByThreeEqually;
+	public boolean getIsThirdDividedByThreeEqually() {
+		return isThirdDividedByThreeEqually;
 	}
-	public void setThirdDivideByThreeEqually(boolean isThird) {
-		this.isThirdDivideByThreeEqually = isThird;
+	public void setIsThirdDividedByThreeEqually(boolean isThird) {
+		this.isThirdDividedByThreeEqually = isThird;
 	}
 	
 	

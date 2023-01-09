@@ -33,8 +33,8 @@ public class Game {
 			
 		}
 		hints.setSumDigit(sum);
-		hints.setFirstEven(isFirstEven);
-		hints.setThirdDivideByThreeEqually(isThirdDividedByThreeEqually);
+		hints.setIsFirstEven(isFirstEven);
+		hints.setIsThirdDividedByThreeEqually(isThirdDividedByThreeEqually);
 		
 		return hints;
 	}

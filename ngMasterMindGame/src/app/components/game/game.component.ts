@@ -1,6 +1,8 @@
+import { Hints } from './../../models/hints';
 import { Attempt } from './../../models/attempt';
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
+import { Game } from 'src/app/models/game';
 
 @Component({
   selector: 'app-game',
@@ -22,6 +24,10 @@ export class GameComponent implements OnInit {
   gameId: string | any;
   feedback: string | any;
   attempt = {} as Attempt;
+
+  isHintsClicked : boolean = false;
+
+  hints = {} as Hints;
   constructor(private gameService: GameService) {}
 
   ngOnInit(): void {
@@ -56,7 +62,8 @@ export class GameComponent implements OnInit {
     this.gameService.index(this.size).subscribe({
       next: (game) => {
         this.gameId = game.gameId;
-
+        this.hints = game.hints;
+        console.log(this.hints);
         console.log('response from index: ' + this.gameId);
         // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
         // console.log(this.gameId.game_id);
@@ -78,6 +85,7 @@ export class GameComponent implements OnInit {
   attemptCountFun(i:number){
     return new Array(i);
   }
+
   checkAttempt() {
     this.attempt = {} as Attempt;
     if (this.guess.length < this.digits.length) {
@@ -130,5 +138,9 @@ export class GameComponent implements OnInit {
         console.error(nojoy);
       },
     });
+  }
+
+  hintsClicked() {
+    this.isHintsClicked = true;
   }
 }
