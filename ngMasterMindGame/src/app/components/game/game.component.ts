@@ -31,6 +31,8 @@ export class GameComponent implements OnInit {
 
   gameId: string | any;
   feedback: string | any;
+  correctNumber: number = 0;
+  correctPosition: number = 0;
   attempt = {} as Attempt;
 
   isHintsClicked : boolean = false;
@@ -38,28 +40,33 @@ export class GameComponent implements OnInit {
   hints = {} as Hints;
   timeData : number = 10;
   event : any;
+  error: string | any;
 
 
   constructor(private gameService: GameService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+
     this.startGame(this.size);
     for (let i = 0 ; i <= 9 ; i++) {
         this.minMaxRange.push(i);
     }
     this.digits = new Array(this.size);
     console.log('test attemptArr ' + this.attemptArr.length);
-    for (let i = this.min; i <= this.max; i++) {
-      this.range.push(i);
-    }
+
     this.attemptArr = []; //a new array of attempt at each new game;
     this.attemptArr.push(this.attempt);//add 1st object attempt to array
   }
+
   counter() {
     console.log('size in counter ' + this.size);
     return new Array(this.size);
   }
   startGame(size: number) {
+    this.range = [];
+    for (let i = this.min; i <= this.max; i++) {
+      this.range.push(i);
+    }
     this.timeData = 6000;
     this.guess = [];
     console.warn('current guess: ' + this.guess);
@@ -68,7 +75,13 @@ export class GameComponent implements OnInit {
     this.attemptArr = []; //reset array of attempt after each new game;
     this.attemptArr.push(this.attempt);//add 1st object attempt to array
     console.log('size after clicking startGame: ' + size);
-    this.retrieveGameId();
+    if (this.max <= this.min) {
+      this.error = "Max has to be greater than min. Please try again!";
+    } else {
+      this.error = "";
+      this.retrieveGameId();
+    }
+
     for (let i = 1; i <= size; i++) {
       this.digits.push('');
     }
@@ -76,6 +89,7 @@ export class GameComponent implements OnInit {
 
     //this.countdown.restart();
     console.log(this.timeData);
+
   }
 
   retrieveGameId() {
@@ -88,9 +102,13 @@ export class GameComponent implements OnInit {
         // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
         // console.log(this.gameId.game_id);
       },
-      error: (problem) => {
+      error: (error) => {
+        if (error === '400') {
+          console.log(error);
+          this.error = "max has to be greater than min";
+        }
         console.error('GameComponent.checkAttempt(): error creating attempt');
-        console.error(problem);
+        console.error(error);
       },
     });
   }
@@ -148,6 +166,10 @@ export class GameComponent implements OnInit {
           // console.log(this.attemptArr.length);
           // console.log(this.attemptArr?.[0]);
           // console.log(this.attemptArr[0].feedback);
+        } else if (this.attemptArr.length >= 11){
+            alert('You lose');
+            this.startGame(this.size);
+
         }
         this.guess = [];
       },

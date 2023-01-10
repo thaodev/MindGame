@@ -1,8 +1,6 @@
 package com.mindGame.controllers;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.mindGame.model.Attempt;
 import com.mindGame.model.Game;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api")
@@ -46,15 +46,25 @@ public class Controller {
 	}
 
 	@GetMapping(value = "/games/{num}/{min}/{max}")
-	private Game createNewGame(@PathVariable int num, @PathVariable int min, @PathVariable int max) {
+	private Game createNewGame(@PathVariable int num, @PathVariable int min, @PathVariable int max, HttpServletResponse res) {
+		Game game = null;
+		try {
+			if (max <= min) {
+				res.setStatus(400);
+			} else {
+				int[] numberOfDigits = getRandomNumber(num, min, max);
+				game =  ul.createGame(numberOfDigits);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			res.setStatus(404);
+		}
+		return game;
 
-		int[] numberOfDigits = getRandomNumber(num, min, max);
-		
-		return ul.createGame(numberOfDigits);
 	}
 
 	@PostMapping(value = "/games/{gameId}/attempts")
-	private Attempt attempt(@PathVariable String gameId, @RequestBody int[] playerGuess) {
+	private Attempt attempt(@PathVariable String gameId, @RequestBody int[] playerGuess, HttpServletResponse res) {
 		System.out.println(Arrays.toString(playerGuess));
 		
 		return ul.attempt(gameId, playerGuess);

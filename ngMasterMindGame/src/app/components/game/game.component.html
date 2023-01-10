@@ -21,7 +21,8 @@
       <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
-    <div>Remaining time: <countdown #cd [config]="{ leftTime: timeData, format: 'm:s' }"
+    <p *ngIf="error">{{error}}</p>
+    <div><span>&#9200; </span> <countdown #cd [config]="{ leftTime: timeData, format: 'm:s' }"
        (event)="handleEvent($event)"></countdown></div>
       {{timeData}}
     <div>Remaining guesses: {{11 - attemptArr.length}}</div>
@@ -50,7 +51,7 @@
             </div>
             <button class="btn btn-warning btn-sm" (click)="checkAttempt()">check</button>
           </td>
-          <td *ngIf="attempt">{{attempt.feedback}}</td>
+          <td *ngIf="attempt && feedback">{{attempt.feedback.numberOfCorrectDigits}} correct number and {{attempt.feedback.numberOfCorrectPos}} correct location</td>
           <!-- <td></td> -->
         </tr>
       </tbody>
