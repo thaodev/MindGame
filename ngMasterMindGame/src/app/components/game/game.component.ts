@@ -119,10 +119,10 @@ export class GameComponent implements OnInit {
     });
   }
 
-  getData(digit: any) {
+  getData(digit: any, j : number) {
     console.warn('player picked' + digit);
     if (digit != 'undefined') {
-      this.guess.push(digit);
+      this.guess[j] = digit;
     }
     console.log('guess size: ' + this.guess.length);
   }
@@ -147,13 +147,12 @@ export class GameComponent implements OnInit {
         console.log(result);
         console.log(result.feedback);
         this.feedback = result.feedback;
-        const length = this.attemptArr.length;
         let content = `${result.feedback.numberOfCorrectDigits} correct number and ${result.feedback.numberOfCorrectPos} correct location`;
         if (
           this.feedback.numberOfCorrectPos < this.size &&
-          this.attemptArr.length <= 10
+          this.attemptArr.length < 10
         ) {
-          this.attemptArr[length - 1] = result;
+          const length = this.attemptArr.length;
           this.attemptArr[length - 1].feedback = result.feedback;
 
           if (
@@ -168,25 +167,21 @@ export class GameComponent implements OnInit {
             content = 'you lose';
           }
           this.attemptArr[length - 1].feedback.content = content;
-          const newAttempt: Attempt = {
-            ...result,
-            feedback: {} as Feedback,
-          };
-          this.attemptArr.push(newAttempt);
-          // }
-          this.attemptCount++;
-          // console.log(this.attemptArr);
-          // console.log(this.attemptArr.length);
-          // console.log(this.attemptArr?.[0]);
-          // console.log(this.attemptArr[0].feedback);
+          if (this.attemptArr.length != 10) {
+            const newAttempt: Attempt = {
+              ...result,
+              feedback: {} as Feedback,
+            };
+            this.attemptArr.push(newAttempt);
+          }
         } else if (this.attemptArr.length >= 11) {
           alert('You lose');
           this.startGame(this.size);
-        } else if (this.feedback.numberOfCorrectPos == this.size) {
-          content = 'you won';
-          console.log(length);
-          console.log(this.attemptArr[length - 1]);
-          this.attemptArr[length - 1].feedback.content = content;
+        } else {
+          const length = this.attemptArr.length;
+          this.attemptArr[length - 1].feedback = result.feedback;
+
+          this.attemptArr[length - 1].feedback.content = 'You won';
         }
         this.guess = [];
       },
@@ -200,7 +195,7 @@ export class GameComponent implements OnInit {
   }
 
   hintsClicked() {
-    this.isHintsClicked = true;
+    this.isHintsClicked = !this.isHintsClicked;
   }
 
   handleEvent(event: CountdownEvent) {

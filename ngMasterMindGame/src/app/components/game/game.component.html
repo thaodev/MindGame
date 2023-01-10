@@ -36,11 +36,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let attempt of attemptArr">
+        <tr *ngFor="let attempt of attemptArr ; let i = index">
           <td >
             <div >
               <!-- <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2"> -->
-              <select type= "number" *ngFor="let box of digits" #box1 (blur)="getData(box1.value)" name="box">
+              {{i + 1}}. <select type= "number" *ngFor="let box of digits ; let j = index" #box1 (blur)="getData(box1.value, j)" name="box">
               <!-- <select type= "number" *ngFor="let box of array"  name="box"> -->
                 <option value=""></option>
                 <option  *ngFor="let i of range" [value]="i">{{i}}</option>
@@ -48,7 +48,7 @@
               </select>
             <!-- </form> -->
             </div>
-            <button class="btn btn-warning btn-sm" (click)="checkAttempt()">check</button>
+            <button class="btn btn-warning btn-sm" (click)="checkAttempt()" [disabled] = "i != attemptArr.length - 1" >check</button>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
