@@ -1,9 +1,10 @@
 import { Hints } from './../../models/hints';
 import { Attempt } from './../../models/attempt';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/models/game';
 import { CountdownComponent } from 'ngx-countdown';
+
 
 @Component({
   selector: 'app-game',
@@ -11,7 +12,7 @@ import { CountdownComponent } from 'ngx-countdown';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
- //@ViewChild('cd', { static: false }) private countdown: CountdownComponent;
+ @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
    //this.countdown.begin();
   isNewGame: boolean = false;
   size: number = 4;
@@ -23,6 +24,7 @@ export class GameComponent implements OnInit {
   digits: any = []; //number of boxes based on player's choice
   attemptArr: Attempt[] = []; //number of attempts that player can have
   attemptCount: number = 1;
+  remaningAttempt: number = 10;
 
   gameId: string | any;
   feedback: string | any;
@@ -35,7 +37,7 @@ export class GameComponent implements OnInit {
   event : any;
 
 
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: GameService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.startGame(this.size);
@@ -52,7 +54,7 @@ export class GameComponent implements OnInit {
     return new Array(this.size);
   }
   startGame(size: number) {
-    this.timeData = 15;
+    this.timeData = 6000;
     this.guess = [];
     console.warn('current guess: ' + this.guess);
     this.size = size;
@@ -65,6 +67,7 @@ export class GameComponent implements OnInit {
       this.digits.push('');
     }
     this.isHintsClicked = false;
+
     //this.countdown.restart();
     console.log(this.timeData);
   }
@@ -158,11 +161,6 @@ export class GameComponent implements OnInit {
   handleEvent(event: { action: string; }) {
     if (event.action == 'done') {
       alert("You lose");
-      // //this.restart('cd');
-      // if (confirm("You lose")) {
-      //   this.timeData = 10;
-      // }
-      {leftTime:this.timeData};
       this.startGame(this.size);
 
     }
