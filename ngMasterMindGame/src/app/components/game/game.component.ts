@@ -3,8 +3,12 @@ import { Attempt } from './../../models/attempt';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/models/game';
-import { CountdownComponent } from 'ngx-countdown';
-
+import {
+  CountdownComponent,
+  CountdownConfig,
+  CountdownEvent,
+} from 'ngx-countdown';
+import { Feedback } from 'src/app/models/feedback';
 
 @Component({
   selector: 'app-game',
@@ -12,8 +16,8 @@ import { CountdownComponent } from 'ngx-countdown';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
- @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
-   //this.countdown.begin();
+  @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
+  //this.countdown.begin();
   isNewGame: boolean = false;
   min: number = 0;
   max: number = 7;
@@ -21,7 +25,7 @@ export class GameComponent implements OnInit {
   selectedDigit: any;
   box: any;
   range: number[] = []; //range for 0->7
-  minMaxRange: number[] = [];//range for  min and max
+  minMaxRange: number[] = []; //range for  min and max
   guess: number[] = [];
   //guess: any = [];
   digits: any = []; //number of boxes based on player's choice
@@ -30,32 +34,34 @@ export class GameComponent implements OnInit {
   remaningAttempt: number = 10;
 
   gameId: string | any;
-  feedback: string | any;
+  feedback = {} as Feedback;
   correctNumber: number = 0;
   correctPosition: number = 0;
   attempt = {} as Attempt;
 
-  isHintsClicked : boolean = false;
+  isHintsClicked: boolean = false;
 
   hints = {} as Hints;
-  timeData : number = 10;
-  event : any;
+  event: any;
   error: string | any;
 
+  config: CountdownConfig = { leftTime: 1100, format: 'm:s' };
 
-  constructor(private gameService: GameService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private gameService: GameService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-
     this.startGame(this.size);
-    for (let i = 0 ; i <= 9 ; i++) {
-        this.minMaxRange.push(i);
+    for (let i = 0; i <= 9; i++) {
+      this.minMaxRange.push(i);
     }
     this.digits = new Array(this.size);
     console.log('test attemptArr ' + this.attemptArr.length);
 
-    this.attemptArr = []; //a new array of attempt at each new game;
-    this.attemptArr.push(this.attempt);//add 1st object attempt to array
+    // this.attemptArr = []; //a new array of attempt at each new game;
+    //this.attemptArr.push(this.attempt);//add 1st object attempt to array
   }
 
   counter() {
@@ -63,22 +69,22 @@ export class GameComponent implements OnInit {
     return new Array(this.size);
   }
   startGame(size: number) {
+    this.isNewGame = false;
     this.range = [];
     for (let i = this.min; i <= this.max; i++) {
       this.range.push(i);
     }
-    this.timeData = 6000;
     this.guess = [];
     console.warn('current guess: ' + this.guess);
     this.size = size;
     this.digits = []; //reset number of boxes after player starting a new game
     this.attemptArr = []; //reset array of attempt after each new game;
-    this.attemptArr.push(this.attempt);//add 1st object attempt to array
+    this.attemptArr.push(this.attempt); //add 1st object attempt to array
     console.log('size after clicking startGame: ' + size);
     if (this.max <= this.min) {
-      this.error = "Max has to be greater than min. Please try again!";
+      this.error = 'Max has to be greater than min. Please try again!';
     } else {
-      this.error = "";
+      this.error = '';
       this.retrieveGameId();
     }
 
@@ -86,10 +92,10 @@ export class GameComponent implements OnInit {
       this.digits.push('');
     }
     this.isHintsClicked = false;
-
-    //this.countdown.restart();
-    console.log(this.timeData);
-
+    setTimeout(() => {
+      this.config = { leftTime: 1100, format: 'm:s' };
+      this.countdown.restart();
+    }, 0);
   }
 
   retrieveGameId() {
@@ -105,7 +111,7 @@ export class GameComponent implements OnInit {
       error: (error) => {
         if (error === '400') {
           console.log(error);
-          this.error = "max has to be greater than min";
+          this.error = 'max has to be greater than min';
         }
         console.error('GameComponent.checkAttempt(): error creating attempt');
         console.error(error);
@@ -120,7 +126,7 @@ export class GameComponent implements OnInit {
     }
     console.log('guess size: ' + this.guess.length);
   }
-  attemptCountFun(i:number){
+  attemptCountFun(i: number) {
     return new Array(i);
   }
 
@@ -141,35 +147,46 @@ export class GameComponent implements OnInit {
         console.log(result);
         console.log(result.feedback);
         this.feedback = result.feedback;
-        if (this.feedback != 'You Won' && this.attemptArr.length < 10) {
-          //console.log(this.attemptArr.length);
-          //console.log(this.attemptArr);
-          if (this.attemptArr.length == 1 && this.attemptArr[0].feedback == null) {
-            this.attemptArr[0].feedback = result.feedback;
-            this.attemptArr[0].attemptId = result.attemptId;
-            this.attemptArr.length++;
-          console.log(this.attemptArr.length);
-          } else {
-            this.attemptArr.push(result);
-            // for(let att of this.attemptArr) {
-            //   if(att == null) {
-            //     att = result;
-            //     att.feedback = result.feedback;
-            //     att.attemptId = result.attemptId;
-            //   }
-            // }
+        const length = this.attemptArr.length;
+        let content = `${result.feedback.numberOfCorrectDigits} correct number and ${result.feedback.numberOfCorrectPos} correct location`;
+        if (
+          this.feedback.numberOfCorrectPos < this.size &&
+          this.attemptArr.length <= 10
+        ) {
+          this.attemptArr[length - 1] = result;
+          this.attemptArr[length - 1].feedback = result.feedback;
 
-
+          if (
+            result.feedback.numberOfCorrectDigits == 0 &&
+            result.feedback.numberOfCorrectPos == 0
+          ) {
+            content = 'all incorrect';
+          } else if (
+            result.feedback.numberOfCorrectDigits == -1 &&
+            result.feedback.numberOfCorrectPos == -1
+          ) {
+            content = 'you lose';
           }
+          this.attemptArr[length - 1].feedback.content = content;
+          const newAttempt: Attempt = {
+            ...result,
+            feedback: {} as Feedback,
+          };
+          this.attemptArr.push(newAttempt);
+          // }
           this.attemptCount++;
           // console.log(this.attemptArr);
           // console.log(this.attemptArr.length);
           // console.log(this.attemptArr?.[0]);
           // console.log(this.attemptArr[0].feedback);
-        } else if (this.attemptArr.length >= 11){
-            alert('You lose');
-            this.startGame(this.size);
-
+        } else if (this.attemptArr.length >= 11) {
+          alert('You lose');
+          this.startGame(this.size);
+        } else if (this.feedback.numberOfCorrectPos == this.size) {
+          content = 'you won';
+          console.log(length);
+          console.log(this.attemptArr[length - 1]);
+          this.attemptArr[length - 1].feedback.content = content;
         }
         this.guess = [];
       },
@@ -186,15 +203,17 @@ export class GameComponent implements OnInit {
     this.isHintsClicked = true;
   }
 
-  handleEvent(event: { action: string; }) {
+  handleEvent(event: CountdownEvent) {
     if (event.action == 'done') {
-      alert("You lose");
-      this.startGame(this.size);
-
+      this.isNewGame = true;
+      setTimeout(() => {
+        alert('You lose');
+        this.startGame(this.size);
+      }, 0);
     }
   }
 
-  restart(comp:CountdownComponent){
+  restart(comp: CountdownComponent) {
     comp.restart();
   }
 }

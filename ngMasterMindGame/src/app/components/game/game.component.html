@@ -22,11 +22,10 @@
 
     </select>
     <p *ngIf="error">{{error}}</p>
-    <div><span>&#9200; </span> <countdown #cd [config]="{ leftTime: timeData, format: 'm:s' }"
+    <div><span>&#9200; </span> <countdown #cd *ngIf="!isNewGame" [config]="config"
        (event)="handleEvent($event)"></countdown></div>
-      {{timeData}}
     <div>Remaining guesses: {{11 - attemptArr.length}}</div>
-    <button class="button d-flex justify-content-end" (click)="startGame(size);cd.restart() ">Start a new game</button>
+    <button class="button d-flex justify-content-end" (click)="startGame(size) ">Start a new game</button>
 
     <table class="table table-sm">
       <thead>
@@ -51,8 +50,7 @@
             </div>
             <button class="btn btn-warning btn-sm" (click)="checkAttempt()">check</button>
           </td>
-          <td *ngIf="attempt && feedback">{{attempt.feedback.numberOfCorrectDigits}} correct number and {{attempt.feedback.numberOfCorrectPos}} correct location</td>
-          <!-- <td></td> -->
+          <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
       </tbody>
 
