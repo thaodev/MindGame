@@ -12,8 +12,8 @@ export class GameService {
   private url = this.baseUrl + 'api/games';
   constructor(private http: HttpClient) {}
 
-  index(num:number): Observable<Game> {
-    return this.http.get<Game>(this.url +"/" +num).pipe(
+  index(num:number, min : number, max: number): Observable<Game> {
+    return this.http.get<Game>(this.url +"/" +num + "/" + min + "/" + max).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(

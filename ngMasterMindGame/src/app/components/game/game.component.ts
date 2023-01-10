@@ -15,10 +15,13 @@ export class GameComponent implements OnInit {
  @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
    //this.countdown.begin();
   isNewGame: boolean = false;
+  min: number = 0;
+  max: number = 7;
   size: number = 4;
   selectedDigit: any;
   box: any;
   range: number[] = []; //range for 0->7
+  minMaxRange: number[] = [];//range for  min and max
   guess: number[] = [];
   //guess: any = [];
   digits: any = []; //number of boxes based on player's choice
@@ -41,9 +44,12 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.startGame(this.size);
+    for (let i = 0 ; i <= 9 ; i++) {
+        this.minMaxRange.push(i);
+    }
     this.digits = new Array(this.size);
     console.log('test attemptArr ' + this.attemptArr.length);
-    for (let i = 0; i <= 7; i++) {
+    for (let i = this.min; i <= this.max; i++) {
       this.range.push(i);
     }
     this.attemptArr = []; //a new array of attempt at each new game;
@@ -73,7 +79,7 @@ export class GameComponent implements OnInit {
   }
 
   retrieveGameId() {
-    this.gameService.index(this.size).subscribe({
+    this.gameService.index(this.size, this.min, this.max).subscribe({
       next: (game) => {
         this.gameId = game.gameId;
         this.hints = game.hints;

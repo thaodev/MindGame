@@ -7,10 +7,18 @@
   </div> -->
 
   <div class="col-8">
-    <select name="size" [(ngModel)]="size">
+    Number of digits: <select name="size" [(ngModel)]="size">
       <option value="4">4</option>
       <option value="6">6</option>
       <option value="8">8</option>
+
+    </select>
+    Min: <select name="min" [(ngModel)]="min">
+      <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
+
+    </select>
+    Max: <select name="max" [(ngModel)]="max">
+      <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
     <div>Remaining time: <countdown #cd [config]="{ leftTime: timeData, format: 'm:s' }"
