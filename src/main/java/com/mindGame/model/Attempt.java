@@ -6,7 +6,7 @@ public class Attempt {
 	private String attemptId;
 	private String gameId;
 	private int[] guess;
-	private String feedback;
+	private Feedback feedback;
 	
 	
 	public Attempt(String gameId, int[] guess) {
@@ -32,11 +32,11 @@ public class Attempt {
 		this.guess = guess;
 	}
 
-	public String getFeedback() {
+	public Feedback getFeedback() {
 		return feedback;
 	}
 
-	public void setFeedback(String feedback) {
+	public void setFeedback(Feedback feedback) {
 		this.feedback = feedback;
 	}
 
