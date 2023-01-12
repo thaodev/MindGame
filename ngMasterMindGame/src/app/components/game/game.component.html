@@ -21,8 +21,8 @@
       <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
-    <p *ngIf="error">{{error}}</p>
-    <div><span>&#9200; </span> <countdown #cd *ngIf="!isNewGame" [config]="config"
+    <p class="error" *ngIf="error">{{error}}</p>
+    <div><span>&#9200; </span> <countdown #cd *ngIf="isNewGame" [config]="config"
        (event)="handleEvent($event)"></countdown></div>
     <div>Remaining guesses: {{11 - attemptArr.length}}</div>
     <button class="button d-flex justify-content-end" (click)="startGame(size) ">Start a new game</button>
@@ -32,23 +32,18 @@
         <tr class="table-warning">
           <th>Attempt</th>
           <th>Feedbacks</th>
-
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let attempt of attemptArr ; let i = index">
           <td >
             <div >
-              <!-- <form #prodQty="ngForm" class="form-group mx-sm-3 mb-2"> -->
               {{i + 1}}. <select type= "number" *ngFor="let box of digits ; let j = index" #box1 (blur)="getData(box1.value, j)" name="box">
-              <!-- <select type= "number" *ngFor="let box of array"  name="box"> -->
                 <option value=""></option>
                 <option  *ngFor="let i of range" [value]="i">{{i}}</option>
-
               </select>
-            <!-- </form> -->
             </div>
-            <button class="btn btn-warning btn-sm" (click)="checkAttempt()" [disabled] = "i != attemptArr.length - 1" >check</button>
+            <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()" [disabled] = "i != attemptArr.length - 1" >check</button>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
@@ -56,8 +51,9 @@
 
     </table>
   </div>
+  <div *ngIf="isTargetshown">The answer is: [{{target}}]</div>
   <div class="col-4">
-    <p (click)="hintsClicked()">*Hints</p>
+    <p (click)="hintsClicked()" *ngIf="!error">*Hints</p>
     <ul *ngIf="isHintsClicked">
       <li>Sum of total digitis is {{hints.sumDigit}}</li>
       <li>The 1st digit is {{hints.isFirstEven === true ? 'even' : 'odd'}}</li>

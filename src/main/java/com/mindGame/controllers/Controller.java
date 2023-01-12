@@ -45,7 +45,7 @@ public class Controller {
 		return arrOfNum;
 	}
 
-	@GetMapping(value = "/games/{num}/{min}/{max}")
+	@GetMapping(value = "/games/length/{num}/min/{min}/max/{max}")
 	private Game createNewGame(@PathVariable int num, @PathVariable int min, @PathVariable int max, HttpServletResponse res) {
 		Game game = null;
 		try {
@@ -57,7 +57,7 @@ public class Controller {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setStatus(404);
+			res.setStatus(400);
 		}
 		return game;
 

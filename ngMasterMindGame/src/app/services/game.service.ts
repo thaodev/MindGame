@@ -13,7 +13,7 @@ export class GameService {
   constructor(private http: HttpClient) {}
 
   index(num:number, min : number, max: number): Observable<Game> {
-    return this.http.get<Game>(this.url +"/" +num + "/" + min + "/" + max).pipe(
+    return this.http.get<Game>(this.url +"/length/" +num + "/min/" + min + "/max/" + max).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(
