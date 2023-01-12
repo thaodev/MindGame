@@ -1,3 +1,4 @@
+import { GameRequestParam } from './../../models/game-request-param';
 import { Hints } from './../../models/hints';
 import { Attempt } from './../../models/attempt';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
@@ -18,6 +19,7 @@ import { Feedback } from 'src/app/models/feedback';
 export class GameComponent implements OnInit {
   @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
   //this.countdown.begin();
+
   isNewGame: boolean = false;
   min: number = 0;
   max: number = 7;
@@ -32,7 +34,7 @@ export class GameComponent implements OnInit {
   attemptArr: Attempt[] = []; //number of attempts that player can have
   attemptCount: number = 1;
   remaningAttempt: number = 10;
-
+  gameRequestParam = {} as GameRequestParam;
   gameId: string | any;
   feedback = {} as Feedback;
   correctNumber: number = 0;
@@ -56,6 +58,7 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isTargetshown = false;
     this.startGame(this.size);
     for (let i = 0; i <= 9; i++) {
       this.minMaxRange.push(i);
@@ -73,6 +76,7 @@ export class GameComponent implements OnInit {
   }
   startGame(size: number) {
     this.isNewGame = true;
+    this.target =[];
     this.range = [];
     for (let i = this.min; i <= this.max; i++) {
       this.range.push(i);
@@ -102,11 +106,14 @@ export class GameComponent implements OnInit {
   }
 
   retrieveGameId() {
-    this.gameService.index(this.size, this.min, this.max).subscribe({
-      next: (game) => {
-        this.gameId = game.gameId;
-        this.hints = game.hints;
-        this.target = game.target;
+    this.gameRequestParam.num = this.size;
+    this.gameRequestParam.min = this.min;
+    this.gameRequestParam.max = this.max;
+    this.gameService.index(this.gameRequestParam).subscribe({
+      next: (gameDTO) => {
+        this.gameId = gameDTO.gameId;
+        this.hints = gameDTO.hints;
+        //this.target = game.target;
         console.log(this.hints);
         console.log('response from index: ' + this.gameId);
         // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
@@ -165,6 +172,7 @@ export class GameComponent implements OnInit {
           ) {
             content = 'YOU LOSE!';
             this.isTargetshown = true;
+            this.target = result.target;
           }
           this.attemptArr[length - 1].feedback.content = content;
           if (this.attemptArr.length != 10) {
