@@ -75,6 +75,7 @@ export class GameComponent implements OnInit {
     return new Array(this.size);
   }
   startGame(size: number) {
+    this.isTargetshown = false;
     this.isNewGame = true;
     this.target =[];
     this.range = [];
