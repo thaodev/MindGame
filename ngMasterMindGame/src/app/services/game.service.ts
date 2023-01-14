@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Attempt } from '../models/attempt';
 import { Game } from '../models/game';
+import { GameRequestParam } from '../models/game-request-param';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,8 @@ export class GameService {
   private url = this.baseUrl + 'api/games';
   constructor(private http: HttpClient) {}
 
-  index(num:number): Observable<Game> {
-    return this.http.get<Game>(this.url +"/" +num).pipe(
+  index(gameReqParam: GameRequestParam): Observable<Game> {
+    return this.http.post<Game>(this.url,gameReqParam).pipe(
       catchError((err: any) => {
         console.log(err);
         return throwError(
