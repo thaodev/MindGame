@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import com.mindGame.model.Attempt;
 import com.mindGame.model.Game;
 import com.mindGame.model.GameCreateRequestDTO;
 import com.mindGame.model.GameDTO;
+import com.mindGame.model.Hint;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -57,7 +59,7 @@ public class Controller {
 			} else {
 				int[] numberOfDigits = getRandomNumber(gameRes.getNum(), gameRes.getMin(), gameRes.getMax());
 				game =  ul.createGame(numberOfDigits);
-				gameDTO = new GameDTO(game.getGameId(), game.getHints());
+				gameDTO = new GameDTO(game.getGameId());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,5 +76,18 @@ public class Controller {
 		return ul.attempt(gameId, playerGuess);
 	}
 	
+	@GetMapping("games/{gameId}/hints")
+	private Hint retrieveHint(@PathVariable String gameId, HttpServletResponse res) {
+		Hint hints = null;
+		
+		try {
+			hints = ul.retrieveHint(gameId);
+		} catch (Exception e) {
+			res.setStatus(400);
+		}
+		
+		return hints;
+		
+	}
 	
 }

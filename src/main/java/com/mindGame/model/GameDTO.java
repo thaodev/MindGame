@@ -2,11 +2,9 @@ package com.mindGame.model;
 
 public class GameDTO {
 	private String gameId;
-	private Hint hints;
 	
-	public GameDTO(String gameId, Hint hints) {
+	public GameDTO(String gameId) {
 		this.gameId = gameId;
-		this.hints = hints;
 	}
 
 	public String getGameId() {
@@ -17,13 +15,6 @@ public class GameDTO {
 		this.gameId = gameId;
 	}
 
-	public Hint getHints() {
-		return hints;
-	}
-
-	public void setHints(Hint hints) {
-		this.hints = hints;
-	}
 	
 	
 	

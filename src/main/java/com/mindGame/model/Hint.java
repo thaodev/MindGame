@@ -1,11 +1,18 @@
 package com.mindGame.model;
 
 public class Hint {
+	private String gameId;
+
 	private int sumDigit;
 	private boolean isFirstEven;
 	private boolean isThirdDivisibleByThree;
 	
-	
+	public String getGameId() {
+		return gameId;
+	}
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
+	}
 	public int getSumDigit() {
 		return sumDigit;
 	}

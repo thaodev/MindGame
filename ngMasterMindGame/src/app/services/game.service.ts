@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Attempt } from '../models/attempt';
 import { Game } from '../models/game';
 import { GameRequestParam } from '../models/game-request-param';
+import { Hints } from '../models/hints';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,23 @@ export class GameService {
             () =>
               new Error(
                 'gameService.checkAttempt(): error checking player guess: ' +
+                  err
+              )
+          );
+        })
+      );
+  }
+
+  retrieveHints(gameId: string): Observable<Hints> {
+    return this.http
+      .get<Hints>(this.url + '/' + gameId + '/hints')
+      .pipe(
+        catchError((err: any) => {
+          console.error(err);
+          return throwError(
+            () =>
+              new Error(
+                'gameService.retrieveHints(): error retrieving hints of game: ' +
                   err
               )
           );

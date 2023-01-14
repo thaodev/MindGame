@@ -113,12 +113,7 @@ export class GameComponent implements OnInit {
     this.gameService.index(this.gameRequestParam).subscribe({
       next: (gameDTO) => {
         this.gameId = gameDTO.gameId;
-        this.hints = gameDTO.hints;
-        //this.target = game.target;
-        console.log(this.hints);
-        console.log('response from index: ' + this.gameId);
-        // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
-        // console.log(this.gameId.game_id);
+
       },
       error: (error) => {
         if (error === '400') {
@@ -205,6 +200,20 @@ export class GameComponent implements OnInit {
 
   hintsClicked() {
     this.isHintsClicked = !this.isHintsClicked;
+    this.gameService.retrieveHints(this.gameId).subscribe({
+      next: (hints) => {
+        this.hints = hints;
+        console.log("inside retrieve hints");
+      },
+      error: (error) => {
+        console.error('GameComponent.retrieveHints(): error retrieve hints');
+        console.error(error);
+      },
+    })
+    console.log(this.hints);
+    console.log('response from index: ' + this.gameId);
+    // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
+    // console.log(this.gameId.game_id);
   }
 
   handleEvent(event: CountdownEvent) {

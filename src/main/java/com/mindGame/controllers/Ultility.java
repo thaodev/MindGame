@@ -22,7 +22,6 @@ public class Ultility {
 
 	private static Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
 	
-	
 
 	public Game createGame(int[] digits) {
 		Game newGame = new Game(digits);
@@ -63,6 +62,7 @@ public class Ultility {
 		}
 		Map<Integer, Integer> map1 = new LinkedHashMap<>();
 		Map<Integer, Integer> map2 = new LinkedHashMap<>();
+		
 		//return number of correct postions
 		for (int i = 0; i < target.length; i++) {
 			map1.put(target[i], map1.getOrDefault(target[i], 0) + 1);
@@ -106,25 +106,14 @@ public class Ultility {
 	}
 	
 	
-//	public Hint createHint(String gameId) {
-//		Hint hints = new Hint();
-//		int sum = 0;
-//		boolean isFirstEven = false;
-//		boolean isThirdDividedByThreeEqually = false;
-//		if (target[0] % 2 == 0) {
-//			isFirstEven = true;
-//		}
-//		if (target[2] % 3== 0) {
-//			isThirdDividedByThreeEqually = true;
-//		}
-//		for (int i =0 ; i < target.length; i++) {
-//			sum += target[i];
-//			
-//		}
-//		hints.setSumDigit(sum);
-//		hints.setIsFirstEven(isFirstEven);
-//		hints.setIsThirdDivisibleByThree(isThirdDividedByThreeEqually);
-//		
-//		return hints;
-//	}
+	public Hint retrieveHint(String gameId) {
+		Hint hints = new Hint();
+		for (Game g : listOfGames) {
+			if (g.getGameId().equals(gameId)) {
+				hints = g.getHints();
+			}
+		}
+		
+		return hints;
+	}
 }
