@@ -12,20 +12,24 @@ import org.springframework.stereotype.Component;
 import com.mindGame.model.Attempt;
 import com.mindGame.model.Feedback;
 import com.mindGame.model.Game;
+import com.mindGame.model.Hint;
 
 @Component
 public class Ultility {
 	
 	private static List<Game> listOfGames = new ArrayList<>();
+	
 
-	private static Map<Game, List<Attempt>> outcome = new HashMap<>();
+	private static Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
+	
+	
 
 	public Game createGame(int[] digits) {
 		Game newGame = new Game(digits);
 
 		listOfGames.add(newGame);
 		List<Attempt> att = new ArrayList<>();
-		outcome.put(newGame, att);
+		recordOfAttempts.put(newGame, att);
 
 		System.out.println("game id: " + newGame.getGameId());
 		System.out.println(Arrays.toString(newGame.getTarget()));
@@ -44,12 +48,13 @@ public class Ultility {
 		for (Game g : listOfGames) {
 			if (g.getGameId().equals(gameId)) {
 				target = g.getTarget();
+				//System.out.println("Target is:" + Arrays.toString(target));
 				game = g;
 			}
 		}
 		// create new attempt
 		Attempt newAttempt = new Attempt(gameId, playerGuess);
-		outcome.get(game).add(newAttempt);
+		recordOfAttempts.get(game).add(newAttempt);
 
 		// Compare attempt's guess vs target array
 		if (target.length != playerGuess.length) {
@@ -58,6 +63,7 @@ public class Ultility {
 		}
 		Map<Integer, Integer> map1 = new LinkedHashMap<>();
 		Map<Integer, Integer> map2 = new LinkedHashMap<>();
+		//return number of correct postions
 		for (int i = 0; i < target.length; i++) {
 			map1.put(target[i], map1.getOrDefault(target[i], 0) + 1);
 			map2.put(playerGuess[i], map2.getOrDefault(playerGuess[i], 0) + 1);
@@ -73,9 +79,10 @@ public class Ultility {
 		}
 		// Get number of past attempts by game id
 		// Else If the number of attempt reach max allowed
-		if (outcome.get(game).size() > 10) {
+		if (recordOfAttempts.get(game).size() >= 10) {
 			numberOfCorrectDigit = -1;
 			numberOfCorrectPos = -1;
+			newAttempt.setTarget(game.getTarget());
 		}
 		//********** NO LONGER NECESSARY *******
 //		// If the use get it right - no longer necessary
@@ -97,4 +104,27 @@ public class Ultility {
 		newAttempt.setGameId(gameId);
 		return newAttempt;
 	}
+	
+	
+//	public Hint createHint(String gameId) {
+//		Hint hints = new Hint();
+//		int sum = 0;
+//		boolean isFirstEven = false;
+//		boolean isThirdDividedByThreeEqually = false;
+//		if (target[0] % 2 == 0) {
+//			isFirstEven = true;
+//		}
+//		if (target[2] % 3== 0) {
+//			isThirdDividedByThreeEqually = true;
+//		}
+//		for (int i =0 ; i < target.length; i++) {
+//			sum += target[i];
+//			
+//		}
+//		hints.setSumDigit(sum);
+//		hints.setIsFirstEven(isFirstEven);
+//		hints.setIsThirdDivisibleByThree(isThirdDividedByThreeEqually);
+//		
+//		return hints;
+//	}
 }

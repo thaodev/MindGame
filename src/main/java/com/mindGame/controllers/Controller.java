@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.mindGame.model.Attempt;
 import com.mindGame.model.Game;
+import com.mindGame.model.GameCreateRequestDTO;
+import com.mindGame.model.GameDTO;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -45,28 +46,33 @@ public class Controller {
 		return arrOfNum;
 	}
 
-	@GetMapping(value = "/games/length/{num}/min/{min}/max/{max}")
-	private Game createNewGame(@PathVariable int num, @PathVariable int min, @PathVariable int max, HttpServletResponse res) {
+	@PostMapping("/games")
+	private GameDTO createNewGame( @RequestBody GameCreateRequestDTO gameRes, HttpServletResponse res) {
 		Game game = null;
+		GameDTO gameDTO = null;
+		
 		try {
-			if (max <= min) {
+			if (gameRes.getMax() <= gameRes.getMin()) {
 				res.setStatus(400);
 			} else {
-				int[] numberOfDigits = getRandomNumber(num, min, max);
+				int[] numberOfDigits = getRandomNumber(gameRes.getNum(), gameRes.getMin(), gameRes.getMax());
 				game =  ul.createGame(numberOfDigits);
+				gameDTO = new GameDTO(game.getGameId(), game.getHints());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			res.setStatus(400);
 		}
-		return game;
+		return gameDTO;
 
 	}
 
-	@PostMapping(value = "/games/{gameId}/attempts")
+	@PostMapping("/games/{gameId}/attempts")
 	private Attempt attempt(@PathVariable String gameId, @RequestBody int[] playerGuess, HttpServletResponse res) {
 		System.out.println(Arrays.toString(playerGuess));
 		
 		return ul.attempt(gameId, playerGuess);
 	}
+	
+	
 }
