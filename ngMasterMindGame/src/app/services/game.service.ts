@@ -59,4 +59,21 @@ export class GameService {
         })
       );
   }
+
+  retrieveTopGame(): Observable<Game[]> {
+    return this.http
+      .get<Game[]>(this.url + '/topGame')
+      .pipe(
+        catchError((err: any) => {
+          console.error(err);
+          return throwError(
+            () =>
+              new Error(
+                'gameService.retrieveTopGame(): error retrieving top games: ' +
+                  err
+              )
+          );
+        })
+      );
+  }
 }

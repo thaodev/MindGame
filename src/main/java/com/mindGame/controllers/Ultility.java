@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Component;
 
@@ -16,12 +17,11 @@ import com.mindGame.model.Hint;
 
 @Component
 public class Ultility {
-	
+
 	private static List<Game> listOfGames = new ArrayList<>();
 	
 
 	private static Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
-	
 
 	public Game createGame(String username, int[] digits) {
 		Game newGame = new Game(username, digits);
@@ -32,13 +32,13 @@ public class Ultility {
 
 		System.out.println("game id: " + newGame.getGameId());
 		System.out.println(Arrays.toString(newGame.getTarget()));
-		
+
 		return newGame;
 	}
-	
-	public Attempt attempt(String gameId,int[] playerGuess) {
+
+	public Attempt attempt(String gameId, int[] playerGuess) {
 		System.out.println(Arrays.toString(playerGuess));
-		
+
 		int numberOfCorrectDigit = 0;
 		int numberOfCorrectPos = 0;
 		// Get target array by game id
@@ -47,7 +47,7 @@ public class Ultility {
 		for (Game g : listOfGames) {
 			if (g.getGameId().equals(gameId)) {
 				target = g.getTarget();
-				//System.out.println("Target is:" + Arrays.toString(target));
+				// System.out.println("Target is:" + Arrays.toString(target));
 				game = g;
 			}
 		}
@@ -62,8 +62,8 @@ public class Ultility {
 		}
 		Map<Integer, Integer> map1 = new LinkedHashMap<>();
 		Map<Integer, Integer> map2 = new LinkedHashMap<>();
-		
-		//return number of correct postions
+
+		// return number of correct postions
 		for (int i = 0; i < target.length; i++) {
 			map1.put(target[i], map1.getOrDefault(target[i], 0) + 1);
 			map2.put(playerGuess[i], map2.getOrDefault(playerGuess[i], 0) + 1);
@@ -84,7 +84,7 @@ public class Ultility {
 			numberOfCorrectPos = -1;
 			newAttempt.setTarget(game.getTarget());
 		}
-		if(numberOfCorrectPos == game.getTarget().length) {
+		if (numberOfCorrectPos == game.getTarget().length) {
 			game.setEndTime(java.time.LocalTime.now());
 		}
 		Feedback feedback = new Feedback(numberOfCorrectDigit, numberOfCorrectPos);
@@ -92,8 +92,7 @@ public class Ultility {
 		newAttempt.setGameId(gameId);
 		return newAttempt;
 	}
-	
-	
+
 	public Hint retrieveHint(String gameId) {
 		Hint hints = new Hint();
 		for (Game g : listOfGames) {
@@ -101,7 +100,50 @@ public class Ultility {
 				hints = g.getHints();
 			}
 		}
-		
+
 		return hints;
+	}
+
+	public List<Game> retrieveTopGame() {
+		List<Game> topGame = new ArrayList<>();
+		List<Integer> durations = new ArrayList<>();
+		Map<Game, Integer> unsortedMap = new LinkedHashMap<>();
+		for (Game g : listOfGames) {
+			if (g.getEndTime() != null) {
+				int startTime = g.getStartTime().getHour() + g.getStartTime().getMinute()
+						+ g.getStartTime().getSecond();
+				int endTime = g.getEndTime().getHour() + g.getEndTime().getMinute() + g.getEndTime().getSecond();
+				durations.add(endTime - startTime);
+				unsortedMap.put(g, endTime-startTime);
+			}
+
+		}
+		//to test top game sorting
+		int[] target1 = {4, 5, 3, 5};
+		Game game1 = new Game("Thao", target1);
+		game1.setGameId("abc123");
+		unsortedMap.put(game1, 400);
+		
+		int[] target2 = {4, 5, 3, 0};
+		Game game2 = new Game("Phuong", target2);
+		game2.setGameId("abc124");
+		unsortedMap.put(game2, 300);
+		
+		
+	
+		if (durations.size() > 0) {
+			System.out.println("before sorting " + unsortedMap);
+
+			List<Entry<Game, Integer>> list = new ArrayList<>(unsortedMap.entrySet());
+			list.sort(Entry.comparingByValue());
+
+			for (Entry<Game, Integer> entry : list) {
+				topGame.add(entry.getKey());
+			}
+			
+		
+			System.out.println("After soring " + list);
+		}
+		return topGame;
 	}
 }

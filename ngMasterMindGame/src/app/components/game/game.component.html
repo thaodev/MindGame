@@ -31,7 +31,8 @@
           placeholder="Enter username" />
         <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
       </div>
-      <div *ngIf="!isUsernameInputShown"><button type="button" class="btn btn-sm btn-secondary" (click)="isUsernameInputShown = true">New Player</button></div>
+      <div *ngIf="!isUsernameInputShown"><button type="button" class="btn btn-sm btn-secondary"
+          (click)="isUsernameInputShown = true">New Player</button></div>
     </div>
 
     <div class="col-4">
@@ -59,7 +60,8 @@
       <countdown #cd *ngIf="isNewGame" [config]="config" (event)="handleEvent($event)"></countdown>
     </div>
     <div>Remaining guesses: {{11 - attemptArr.length}}</div>
-    <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(size) ">Start a new game</button>
+    <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(size) ">Start a new
+      game</button>
 
     <table class="table table-sm">
       <thead>
@@ -94,6 +96,13 @@
       <li>Sum of total digitis is {{hints.sumDigit}}</li>
       <li>The 1st digit is {{hints.isFirstEven === true ? 'even' : 'odd'}}</li>
       <li>The 3rd digit is {{hints.isThirdDivisibleByThree == true ? '' : 'not'}} divisible by 3 </li>
+    </ul>
+  </div>
+  <button type="submit" (click)="showTopGame()">Top Game</button>
+
+  <div *ngIf="isTopGameShown">
+    <ul *ngFor="let g of topGame">
+      <li>{{g.username}} </li>
     </ul>
   </div>
 </div>

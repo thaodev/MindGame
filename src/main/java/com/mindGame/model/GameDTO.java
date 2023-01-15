@@ -4,10 +4,12 @@ import java.time.LocalTime;
 
 public class GameDTO {
 	private String gameId;
+	private String username;
 	private LocalTime startTime;
 	private LocalTime endTime;
 	
-	public GameDTO(String gameId, LocalTime startTime) {
+	public GameDTO(String username, String gameId, LocalTime startTime) {
+		this.username = username;
 		this.gameId = gameId;
 		this.startTime = startTime;
 	}
@@ -18,6 +20,15 @@ public class GameDTO {
 
 	public void setGameId(String gameId) {
 		this.gameId = gameId;
+	}
+	
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public LocalTime getStartTime() {

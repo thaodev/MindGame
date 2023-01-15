@@ -20,6 +20,7 @@ public class Game {
 		
 	}
 	
+	
 	private Hint createHint(int[] target) {
 		Hint hints = new Hint();
 		int sum = 0;
@@ -44,6 +45,20 @@ public class Game {
 
 	public Hint getHints() {
 		return hints;
+	}
+
+	
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getGameId() {

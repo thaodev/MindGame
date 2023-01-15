@@ -42,7 +42,8 @@ export class GameComponent implements OnInit {
   attempt = {} as Attempt;
 
   isHintsClicked: boolean = false;
-
+  isTopGameShown : boolean = false;
+  topGame: Game[] = [];
   target: number[] = [];
   isTargetshown: boolean = false;
 
@@ -92,6 +93,8 @@ export class GameComponent implements OnInit {
     this.digits = []; //reset number of boxes after player starting a new game
     this.attemptArr = []; //reset array of attempt after each new game;
     this.attemptArr.push(this.attempt); //add 1st object attempt to array
+
+
     console.log('size after clicking startGame: ' + size);
     if (this.max <= this.min) {
       this.error = 'Max has to be greater than min. Please try again!';
@@ -232,6 +235,18 @@ export class GameComponent implements OnInit {
     }
   }
 
+  showTopGame(){
+    this.gameService.retrieveTopGame().subscribe({
+      next: (result) => {
+        this.topGame = result;
+        console.log("inside retrieve hints");
+      },
+      error: (error) => {
+        console.error('GameComponent.retrieveTopGame(): error retrieve topGame');
+        console.error(error);
+      },
+    })
+  }
   restart(comp: CountdownComponent) {
     comp.restart();
   }
