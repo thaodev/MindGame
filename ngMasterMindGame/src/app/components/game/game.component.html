@@ -60,7 +60,8 @@
       <countdown #cd *ngIf="isNewGame" [config]="config" (event)="handleEvent($event)"></countdown>
     </div>
     <div>Remaining guesses: {{11 - attemptArr.length}}</div>
-    <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(username, size) ">Start a new
+    <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(username, size) ">Start
+      a new
       game</button>
 
     <table class="table table-sm">
@@ -101,8 +102,21 @@
   <button type="submit" (click)="showTopGame()">Top Game</button>
 
   <div *ngIf="isTopGameShown">
-    <ul *ngFor="let g of topGameMap | keyvalue; let i = index">
-      <li>{{i + 1}}. {{g.key.username}} {{g.value*1000 | date:'mm:ss'}}</li>
-    </ul>
+    <table class="table table-sm">
+      <thead>
+        <tr class="table-secondary">
+          <th>No.</th>
+          <th>Username</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
+          <td>{{i + 1}}.</td>
+          <td>{{g.key.username}}</td>
+          <td>{{g.value*1000 | date:'mm:ss'}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

@@ -257,7 +257,6 @@ export class GameComponent implements OnInit {
         //   console.log(key.username);
         // }
 
-        this
         console.log("inside showTopGame()");
       },
       error: (error) => {
