@@ -101,8 +101,8 @@
   <button type="submit" (click)="showTopGame()">Top Game</button>
 
   <div *ngIf="isTopGameShown">
-    <ul *ngFor="let g of topGame">
-      <li>{{g.username}} </li>
+    <ul *ngFor="let g of topGameMap | keyvalue; let i = index">
+      <li>{{i + 1}}. {{g.key.username}} {{g.value}}</li>
     </ul>
   </div>
 </div>

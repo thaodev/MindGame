@@ -60,9 +60,9 @@ export class GameService {
       );
   }
 
-  retrieveTopGame(): Observable<Game[]> {
+  retrieveTopGame(): Observable<Map<Game,number>> {
     return this.http
-      .get<Game[]>(this.url + '/topGame')
+      .get<Map<Game,number>>(this.url + '/topGame')
       .pipe(
         catchError((err: any) => {
           console.error(err);

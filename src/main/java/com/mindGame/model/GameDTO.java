@@ -47,6 +47,12 @@ public class GameDTO {
 		this.endTime = endTime;
 	}
 
+	@Override
+	public String toString() {
+		return "GameDTO [gameId=" + gameId + ", username=" + username + ", startTime=" + startTime + ", endTime="
+				+ endTime + "]";
+	}
+
 	
 	
 	

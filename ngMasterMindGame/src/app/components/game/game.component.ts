@@ -44,6 +44,8 @@ export class GameComponent implements OnInit {
   isHintsClicked: boolean = false;
   isTopGameShown : boolean = false;
   duration: number = 0;
+
+  topGameMap : Map<Game,number> = new Map<Game,number>();
   topGame: Game[] = [];
   target: number[] = [];
   isTargetshown: boolean = false;
@@ -240,8 +242,20 @@ export class GameComponent implements OnInit {
     this.isTopGameShown = true;
     this.gameService.retrieveTopGame().subscribe({
       next: (result) => {
-        this.topGame = result;
+        this.topGameMap = result;
+        console.log(this.topGameMap);
+        // this.topGameMap.forEach((value, key) =>{
+        //   console.log("key : " + key + " and value is: " + value );
+        // });
+        // this.topGameMap.forEach(function(value,key) {
+        //   console.log(`key is: ${key} and value is: ${value}` );
+        // })
         //this.duration =
+        // for (const key of result.keys()) {
+        //   console.log(key.username);
+        // }
+
+        this
         console.log("inside showTopGame()");
       },
       error: (error) => {
