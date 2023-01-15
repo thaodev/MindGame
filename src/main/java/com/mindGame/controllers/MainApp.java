@@ -16,7 +16,7 @@ import com.mindGame.model.Game;
 import com.mindGame.model.Hint;
 
 @Component
-public class Ultility {
+public class MainApp {
 
 	private static List<Game> listOfGames = new ArrayList<>();
 
@@ -85,6 +85,7 @@ public class Ultility {
 		}
 		if (numberOfCorrectPos == game.getTarget().length) {
 			game.setEndTime(java.time.LocalTime.now());
+			System.out.println("end time: " + game.getEndTime());
 		}
 		Feedback feedback = new Feedback(numberOfCorrectDigit, numberOfCorrectPos);
 		newAttempt.setFeedback(feedback);
@@ -109,10 +110,12 @@ public class Ultility {
 		Map<Game, Integer> unsortedMap = new LinkedHashMap<>();
 		for (Game g : listOfGames) {
 			if (g.getEndTime() != null) {
-				int startTime = g.getStartTime().getHour() + g.getStartTime().getMinute()
+				int startTime = g.getStartTime().getHour()*360 + g.getStartTime().getMinute()*60
 						+ g.getStartTime().getSecond();
-				int endTime = g.getEndTime().getHour() + g.getEndTime().getMinute() + g.getEndTime().getSecond();
+				System.out.println("converted start time: " + startTime);
+				int endTime = g.getEndTime().getHour()*360 + g.getEndTime().getMinute()*60 + g.getEndTime().getSecond();
 				durations.add(endTime - startTime);
+				System.out.println("duration: " + (endTime - startTime));
 				unsortedMap.put(g, endTime - startTime);
 			}
 

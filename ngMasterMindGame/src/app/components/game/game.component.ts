@@ -63,7 +63,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.isTargetshown = false;
-    this.startGame(this.size);
+    this.startGame(this.username, this.size);
     for (let i = 0; i <= 9; i++) {
       this.minMaxRange.push(i);
     }
@@ -77,12 +77,13 @@ export class GameComponent implements OnInit {
   retrieveUsername(username: string){
     this.username = username;
     this.isUsernameInputShown = false;
+    this.startGame(this.username, this.size);
   }
   counter() {
     console.log('size in counter ' + this.size);
     return new Array(this.size);
   }
-  startGame(size: number) {
+  startGame(username: string, size: number) {
     this.isTargetshown = false;
     this.isNewGame = true;
     this.target =[];
@@ -192,12 +193,13 @@ export class GameComponent implements OnInit {
           }
         } else if (this.attemptArr.length >= 11) {
           alert('You lose');
-          this.startGame(this.size);
+          this.startGame(this.username, this.size);
         } else if (result.feedback.numberOfCorrectPos == 4){
           const length = this.attemptArr.length;
           this.attemptArr[length - 1].feedback = result.feedback;
 
           this.attemptArr[length - 1].feedback.content = 'YOU WIN!';
+          this.countdown.stop();
         }
         this.guess = [];
       },
@@ -233,7 +235,7 @@ export class GameComponent implements OnInit {
       this.isNewGame = false;
       setTimeout(() => {
         alert('You lose');
-        this.startGame(this.size);
+        this.startGame(this.username, this.size);
       }, 0);
     }
   }

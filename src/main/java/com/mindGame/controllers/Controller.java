@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class Controller {
 
 	@Autowired
-	Ultility ul;
+	MainApp ul;
 
 	@RequestMapping("/hello")
 	public String hello() {
@@ -62,6 +62,7 @@ public class Controller {
 				int[] numberOfDigits = getRandomNumber(gameRes.getNum(), gameRes.getMin(), gameRes.getMax());
 				game = ul.createGame(gameRes.getUsername(), numberOfDigits);
 				game.setStartTime(java.time.LocalTime.now());
+				System.out.println("start time: " + game.getStartTime());
 				gameDTO = new GameDTO(game.getUsername(), game.getGameId(), game.getStartTime());
 			}
 		} catch (Exception e) {
