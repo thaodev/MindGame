@@ -58,8 +58,9 @@ public class Controller {
 				res.setStatus(400);
 			} else {
 				int[] numberOfDigits = getRandomNumber(gameRes.getNum(), gameRes.getMin(), gameRes.getMax());
-				game =  ul.createGame(numberOfDigits);
-				gameDTO = new GameDTO(game.getGameId());
+				game =  ul.createGame(gameRes.getUsername(),numberOfDigits);
+				game.setStartTime(java.time.LocalTime.now());
+				gameDTO = new GameDTO(game.getGameId(), game.getStartTime());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

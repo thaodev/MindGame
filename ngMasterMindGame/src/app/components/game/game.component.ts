@@ -19,7 +19,8 @@ import { Feedback } from 'src/app/models/feedback';
 export class GameComponent implements OnInit {
   @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
   //this.countdown.begin();
-
+  isUsernameInputShown : boolean = true;
+  username: String | any;
   isNewGame: boolean = false;
   min: number = 0;
   max: number = 7;
@@ -29,7 +30,6 @@ export class GameComponent implements OnInit {
   range: number[] = []; //range for 0->7
   minMaxRange: number[] = []; //range for  min and max
   guess: number[] = [];
-  //guess: any = [];
   digits: any = []; //number of boxes based on player's choice
   attemptArr: Attempt[] = []; //number of attempts that player can have
   attemptCount: number = 1;
@@ -70,6 +70,10 @@ export class GameComponent implements OnInit {
     //this.attemptArr.push(this.attempt);//add 1st object attempt to array
   }
 
+  retrieveUsername(username: string){
+    this.username = username;
+    this.isUsernameInputShown = false;
+  }
   counter() {
     console.log('size in counter ' + this.size);
     return new Array(this.size);
@@ -107,9 +111,11 @@ export class GameComponent implements OnInit {
   }
 
   retrieveGameId() {
+
     this.gameRequestParam.num = this.size;
     this.gameRequestParam.min = this.min;
     this.gameRequestParam.max = this.max;
+    this.gameRequestParam.username = this.username;
     this.gameService.index(this.gameRequestParam).subscribe({
       next: (gameDTO) => {
         this.gameId = gameDTO.gameId;

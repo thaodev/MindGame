@@ -23,8 +23,8 @@ public class Ultility {
 	private static Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
 	
 
-	public Game createGame(int[] digits) {
-		Game newGame = new Game(digits);
+	public Game createGame(String username, int[] digits) {
+		Game newGame = new Game(username, digits);
 
 		listOfGames.add(newGame);
 		List<Attempt> att = new ArrayList<>();
@@ -84,21 +84,9 @@ public class Ultility {
 			numberOfCorrectPos = -1;
 			newAttempt.setTarget(game.getTarget());
 		}
-		//********** NO LONGER NECESSARY *******
-//		// If the use get it right - no longer necessary
-//		else if (numberOfCorrectPos == target.length) {
-//			numberOfCorrectDigit = target.length;
-//			numberOfCorrectPos = target.length;
-//		}
-//		// Get current
-//		else if (countCorrectGuess == 0 && countCorrectLocation == 0) {
-//			feedback = "all incorrect";
-//		}
-//		// Else Return result
-//
-//		else {
-//			feedback = "correct_nums = " + countCorrectGuess + ", correct_count = " + countCorrectLocation;
-//		}
+		if(numberOfCorrectPos == game.getTarget().length) {
+			game.setEndTime(java.time.LocalTime.now());
+		}
 		Feedback feedback = new Feedback(numberOfCorrectDigit, numberOfCorrectPos);
 		newAttempt.setFeedback(feedback);
 		newAttempt.setGameId(gameId);

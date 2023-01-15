@@ -1,11 +1,44 @@
-<p>Randomly generated number is: </p>
 <div class="container-fluid">
-  <!-- <div *ngIf="!isGameStart">
-    <p>Enter username</p>
-    <input type="text"/>
-    <button class="btn btn-secondary" (click)="startGame()">Start Game</button>
+  <!-- <div class="row">
+    <div  class="mb-1 col-8">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Enter username</span>
+      </div>
+      <input class="form-control" type="text" size="30"  required name="description" [(ngModel)]="username"
+        placeholder="Enter username" />
+        <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
+    </div>
+    <div class="col-4">{{username}}</div>
   </div> -->
+  <!-- <div class="row">
+    <div class="col">
+      <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          Enter username: <input type="password" class="form-control" placeholder="Enter username">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+      </form>
+    </div>
+    <div class="col">{{username}}</div>
+  </div> -->
+  <div class="row">
+    <div class="col-8">
+      <div *ngIf="isUsernameInputShown" class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Enter username</span>
+        </div>
+        <input class="form-control" type="text" size="30" required name="description" [(ngModel)]="username"
+          placeholder="Enter username" />
+        <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
+      </div>
+      <div *ngIf="!isUsernameInputShown"><button type="button" class="btn btn-sm btn-secondary" (click)="isUsernameInputShown = true">New Player</button></div>
+    </div>
 
+    <div class="col-4">
+      Player {{username}}
+    </div>
+  </div>
+  <br>
   <div class="col-8">
     Number of digits: <select name="size" [(ngModel)]="size">
       <option value="4">4</option>
@@ -22,10 +55,11 @@
 
     </select>
     <p class="error" *ngIf="error">{{error}}</p>
-    <div><span>&#9200; </span> <countdown #cd *ngIf="isNewGame" [config]="config"
-       (event)="handleEvent($event)"></countdown></div>
+    <div><span>&#9200; </span>
+      <countdown #cd *ngIf="isNewGame" [config]="config" (event)="handleEvent($event)"></countdown>
+    </div>
     <div>Remaining guesses: {{11 - attemptArr.length}}</div>
-    <button class="button d-flex justify-content-end" (click)="startGame(size) ">Start a new game</button>
+    <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(size) ">Start a new game</button>
 
     <table class="table table-sm">
       <thead>
@@ -36,14 +70,16 @@
       </thead>
       <tbody>
         <tr *ngFor="let attempt of attemptArr ; let i = index">
-          <td >
-            <div >
-              {{i + 1}}. <select type= "number" *ngFor="let box of digits ; let j = index" #box1 (blur)="getData(box1.value, j)" name="box">
+          <td>
+            <div>
+              {{i + 1}}. <select type="number" *ngFor="let box of digits ; let j = index" #box1
+                (blur)="getData(box1.value, j)" name="box">
                 <option value=""></option>
-                <option  *ngFor="let i of range" [value]="i">{{i}}</option>
+                <option *ngFor="let i of range" [value]="i">{{i}}</option>
               </select>
             </div>
-            <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()" [disabled] = "i != attemptArr.length - 1" >check</button>
+            <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()"
+              [disabled]="i != attemptArr.length - 1">check</button>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
