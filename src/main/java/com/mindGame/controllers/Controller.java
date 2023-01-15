@@ -1,8 +1,9 @@
 package com.mindGame.controllers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -93,14 +94,16 @@ public class Controller {
 	}
 
 	@GetMapping("games/topGame")
-	private List<GameDTO> retrieveTopGame(HttpServletResponse res) {
-		List<GameDTO> topGame = new ArrayList<>();
+	private Map<GameDTO,Integer> retrieveTopGame(HttpServletResponse res) {
+		Map<GameDTO, Integer> topGame = new LinkedHashMap<>();
+		Game g = null;
+		GameDTO gDTO = null;
 		try {
-			List<Game> listOfTopGames = ul.retrieveTopGame();
-			for (Game g : listOfTopGames) {
-				System.out.println("game " + g);
-				GameDTO gDTO = new GameDTO(g.getUsername(), g.getGameId(), g.getStartTime());
-				topGame.add(gDTO);
+			Map<Game, Integer> listOfTopGames = ul.retrieveTopGame();
+			for (Map.Entry<Game, Integer> entry : listOfTopGames.entrySet()) {
+				g = entry.getKey();
+				gDTO = new GameDTO(g.getUsername(), g.getGameId(), g.getStartTime());
+				topGame.put(gDTO, entry.getValue());
 			}
 		} catch (Exception e) {
 			res.setStatus(400);

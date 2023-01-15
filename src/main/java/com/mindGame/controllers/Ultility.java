@@ -103,8 +103,8 @@ public class Ultility {
 		return hints;
 	}
 
-	public List<Game> retrieveTopGame() {
-		List<Game> topGame = new ArrayList<>();
+	public Map<Game, Integer> retrieveTopGame() {
+		Map<Game, Integer> topGame = new LinkedHashMap<>();
 		List<Integer> durations = new ArrayList<>();
 		Map<Game, Integer> unsortedMap = new LinkedHashMap<>();
 		for (Game g : listOfGames) {
@@ -134,7 +134,7 @@ public class Ultility {
 		list.sort(Entry.comparingByValue());
 
 		for (Entry<Game, Integer> entry : list) {
-			topGame.add(entry.getKey());
+			topGame.put(entry.getKey(), entry.getValue());
 		}
 
 		System.out.println("After soring " + list);

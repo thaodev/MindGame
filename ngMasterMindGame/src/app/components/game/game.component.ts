@@ -43,6 +43,7 @@ export class GameComponent implements OnInit {
 
   isHintsClicked: boolean = false;
   isTopGameShown : boolean = false;
+  duration: number = 0;
   topGame: Game[] = [];
   target: number[] = [];
   isTargetshown: boolean = false;
@@ -236,10 +237,12 @@ export class GameComponent implements OnInit {
   }
 
   showTopGame(){
+    this.isTopGameShown = true;
     this.gameService.retrieveTopGame().subscribe({
       next: (result) => {
         this.topGame = result;
-        console.log("inside retrieve hints");
+        //this.duration =
+        console.log("inside showTopGame()");
       },
       error: (error) => {
         console.error('GameComponent.retrieveTopGame(): error retrieve topGame');
