@@ -19,7 +19,6 @@ import com.mindGame.model.Hint;
 public class Ultility {
 
 	private static List<Game> listOfGames = new ArrayList<>();
-	
 
 	private static Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
 
@@ -114,36 +113,31 @@ public class Ultility {
 						+ g.getStartTime().getSecond();
 				int endTime = g.getEndTime().getHour() + g.getEndTime().getMinute() + g.getEndTime().getSecond();
 				durations.add(endTime - startTime);
-				unsortedMap.put(g, endTime-startTime);
+				unsortedMap.put(g, endTime - startTime);
 			}
 
 		}
-		//to test top game sorting
-		int[] target1 = {4, 5, 3, 5};
+		// to test top game sorting
+		int[] target1 = { 4, 5, 3, 5 };
 		Game game1 = new Game("Thao", target1);
 		game1.setGameId("abc123");
 		unsortedMap.put(game1, 400);
-		
-		int[] target2 = {4, 5, 3, 0};
+
+		int[] target2 = { 4, 5, 3, 0 };
 		Game game2 = new Game("Phuong", target2);
 		game2.setGameId("abc124");
 		unsortedMap.put(game2, 300);
-		
-		
-	
-		if (durations.size() > 0) {
-			System.out.println("before sorting " + unsortedMap);
 
-			List<Entry<Game, Integer>> list = new ArrayList<>(unsortedMap.entrySet());
-			list.sort(Entry.comparingByValue());
+		System.out.println("before sorting " + unsortedMap);
 
-			for (Entry<Game, Integer> entry : list) {
-				topGame.add(entry.getKey());
-			}
-			
-		
-			System.out.println("After soring " + list);
+		List<Entry<Game, Integer>> list = new ArrayList<>(unsortedMap.entrySet());
+		list.sort(Entry.comparingByValue());
+
+		for (Entry<Game, Integer> entry : list) {
+			topGame.add(entry.getKey());
 		}
+
+		System.out.println("After soring " + list);
 		return topGame;
 	}
 }
