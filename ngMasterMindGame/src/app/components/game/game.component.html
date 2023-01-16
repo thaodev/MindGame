@@ -87,7 +87,7 @@
                 </select>
               </div>
               <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()"
-                [disabled]="i < attemptArr.length - 1">check</button>
+                [disabled]="i < attemptArr.length - 1 || clickCount == 10">check</button>
             </div>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>

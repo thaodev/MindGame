@@ -86,6 +86,7 @@ export class GameComponent implements OnInit {
     return new Array(this.size);
   }
   startGame(username: string, size: number) {
+    this.clickCount = 0;
     this.isTargetshown = false;
     this.isNewGame = true;
     this.target =[];
@@ -153,6 +154,7 @@ export class GameComponent implements OnInit {
   }
 
   checkAttempt() {
+    this.clickCount += 1;
     this.attempt = {} as Attempt;
     if (this.guess.length < this.digits.length) {
       alert('Not enough numbers input');
@@ -184,6 +186,7 @@ export class GameComponent implements OnInit {
             content = 'YOU LOSE!';
             this.isTargetshown = true;
             this.target = result.target;
+            this.countdown.stop();
           }
           this.attemptArr[length - 1].feedback.content = content;
           if (this.attemptArr.length != 10) {
@@ -196,11 +199,12 @@ export class GameComponent implements OnInit {
         } else if (this.attemptArr.length >= 11) {
           alert('You lose');
           this.startGame(this.username, this.size);
-        } else if (result.feedback.numberOfCorrectPos == 4){
+        } else if (result.feedback.numberOfCorrectPos == this.size){
           const length = this.attemptArr.length;
           this.attemptArr[length - 1].feedback = result.feedback;
 
           this.attemptArr[length - 1].feedback.content = 'YOU WIN!';
+          this.clickCount = 10;//when player won, the check button will be disabled
           this.countdown.stop();
         }
         this.guess = [];
