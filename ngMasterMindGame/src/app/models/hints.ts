@@ -3,9 +3,9 @@ export class Hints {
   isFirstEven:boolean;
   isThirdDivisibleByThree: boolean;
 
-  constructor(sumDigit:number, isFirstEven:boolean, isThirdDividedByThreeEqually:boolean) {
+  constructor(sumDigit:number, isFirstEven:boolean, isThirdDivisibleByThree:boolean) {
     this.sumDigit = sumDigit;
     this.isFirstEven = isFirstEven;
-    this.isThirdDivisibleByThree = isThirdDividedByThreeEqually;
+    this.isThirdDivisibleByThree = isThirdDivisibleByThree;
   }
 }

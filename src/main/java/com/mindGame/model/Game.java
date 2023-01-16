@@ -1,21 +1,25 @@
 package com.mindGame.model;
 
-import java.util.Arrays;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public class Game {
 	private String gameId;
 	private int[] target;
 	private Hint hints;
-	//private int maxAttempt;
+	private String username;
+	private LocalTime startTime;
+	private LocalTime endTime;
 	
 	
-	
-	public Game(int[] target) {
+	public Game(String username, int[] target) {
 		this.gameId = UUID.randomUUID().toString();
+		this.username = username;
 		this.target = target;
 		this.hints = createHint(target);
+		
 	}
+	
 	
 	private Hint createHint(int[] target) {
 		Hint hints = new Hint();
@@ -35,12 +39,26 @@ public class Game {
 		hints.setSumDigit(sum);
 		hints.setIsFirstEven(isFirstEven);
 		hints.setIsThirdDivisibleByThree(isThirdDividedByThreeEqually);
-		
+		System.out.println(isThirdDividedByThreeEqually + " " + target[2]);
 		return hints;
 	}
 
 	public Hint getHints() {
 		return hints;
+	}
+
+	
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getGameId() {
@@ -57,6 +75,22 @@ public class Game {
 	}
 
 
+
+	public LocalTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalTime getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
+	}
 
 	@Override
 	public String toString() {

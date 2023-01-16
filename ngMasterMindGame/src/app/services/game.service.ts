@@ -4,13 +4,19 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Attempt } from '../models/attempt';
 import { Game } from '../models/game';
 import { GameRequestParam } from '../models/game-request-param';
+import { Hints } from '../models/hints';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
-  private baseUrl = 'http://localhost:8080/';
-  private url = this.baseUrl + 'api/games';
+ // private baseUrl = 'http://localhost:8080/';
+  //private url = this.baseUrl + 'api/games';
+
+  private baseUrl = environment.baseUrl;
+  private uri = 'api/games';
+  private url = this.baseUrl + this.uri;
   constructor(private http: HttpClient) {}
 
   index(gameReqParam: GameRequestParam): Observable<Game> {
@@ -41,4 +47,54 @@ export class GameService {
         })
       );
   }
+
+  retrieveHints(gameId: string): Observable<Hints> {
+    return this.http
+      .get<Hints>(this.url + '/' + gameId + '/hints')
+      .pipe(
+        catchError((err: any) => {
+          console.error(err);
+          return throwError(
+            () =>
+              new Error(
+                'gameService.retrieveHints(): error retrieving hints of game: ' +
+                  err
+              )
+          );
+        })
+      );
+  }
+
+  retrieveTopGame(): Observable<Game[]> {
+    return this.http
+      .get<Game[]>(this.url + '/topGame')
+      .pipe(
+        catchError((err: any) => {
+          console.error(err);
+          return throwError(
+            () =>
+              new Error(
+                'gameService.retrieveTopGame(): error retrieving top games: ' +
+                  err
+              )
+          );
+        })
+      );
+  }
+  // retrieveTopGame(): Observable<Map<Game,number>> {
+  //   return this.http
+  //     .get<Map<Game,number>>(this.url + '/topGame')
+  //     .pipe(
+  //       catchError((err: any) => {
+  //         console.error(err);
+  //         return throwError(
+  //           () =>
+  //             new Error(
+  //               'gameService.retrieveTopGame(): error retrieving top games: ' +
+  //                 err
+  //             )
+  //         );
+  //       })
+  //     );
+  // }
 }

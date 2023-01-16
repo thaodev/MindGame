@@ -1,11 +1,45 @@
-<p>Randomly generated number is: </p>
 <div class="container-fluid">
-  <!-- <div *ngIf="!isGameStart">
-    <p>Enter username</p>
-    <input type="text"/>
-    <button class="btn btn-secondary" (click)="startGame()">Start Game</button>
+  <!-- <div class="row">
+    <div  class="mb-1 col-8">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Enter username</span>
+      </div>
+      <input class="form-control" type="text" size="30"  required name="description" [(ngModel)]="username"
+        placeholder="Enter username" />
+        <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
+    </div>
+    <div class="col-4">{{username}}</div>
   </div> -->
+  <!-- <div class="row">
+    <div class="col">
+      <form class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          Enter username: <input type="password" class="form-control" placeholder="Enter username">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+      </form>
+    </div>
+    <div class="col">{{username}}</div>
+  </div> -->
+  <div class="row">
+    <div class="col-8">
+      <div *ngIf="isUsernameInputShown" class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Enter username</span>
+        </div>
+        <input class="form-control" type="text" size="30" required name="description" [(ngModel)]="username"
+          placeholder="Enter username" />
+        <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
+      </div>
+      <div *ngIf="!isUsernameInputShown"><button type="button" class="btn btn-sm btn-secondary"
+          (click)="isUsernameInputShown = true">New Player</button></div>
+    </div>
 
+    <div class="col-4">
+      Player {{username}}
+    </div>
+  </div>
+  <br>
   <div class="col-8">
     Number of digits: <select name="size" [(ngModel)]="size">
       <option value="4">4</option>
@@ -13,37 +47,48 @@
       <option value="8">8</option>
 
     </select>
-    Min: <select name="min" [(ngModel)]="min">
+    <br>
+    <br>
+    Range
+    Lowest: <select name="min" [(ngModel)]="min">
       <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
-    Max: <select name="max" [(ngModel)]="max">
+    Highest: <select name="max" [(ngModel)]="max">
       <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
     <p class="error" *ngIf="error">{{error}}</p>
-    <div><span>&#9200; </span> <countdown #cd *ngIf="isNewGame" [config]="config"
-       (event)="handleEvent($event)"></countdown></div>
-    <div>Remaining guesses: {{11 - attemptArr.length}}</div>
-    <button class="button d-flex justify-content-end" (click)="startGame(size) ">Start a new game</button>
+    <br>
+    <div><span>&#9200; </span>
+      <countdown #cd *ngIf="isNewGame" [config]="config" (event)="handleEvent($event)"></countdown>
+    </div>
+    <div>Remaining guesses: {{10 - attemptArr.length}}</div>
+    <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(username, size) ">Start
+      a new
+      game</button>
 
     <table class="table table-sm">
       <thead>
         <tr class="table-warning">
-          <th>Attempt</th>
-          <th>Feedbacks</th>
+          <th>Attempts</th>
+          <th>Feedback</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let attempt of attemptArr ; let i = index">
-          <td >
-            <div >
-              {{i + 1}}. <select type= "number" *ngFor="let box of digits ; let j = index" #box1 (blur)="getData(box1.value, j)" name="box">
-                <option value=""></option>
-                <option  *ngFor="let i of range" [value]="i">{{i}}</option>
-              </select>
+          <td>
+            <div class="d-flex d-justify-content-start">
+              <div class="mx-3">
+                {{i + 1}}. <select type="number" *ngFor="let box of digits ; let j = index" #box1
+                  (blur)="getData(box1.value, j)" name="box">
+                  <option value=""></option>
+                  <option *ngFor="let i of range" [value]="i">{{i}}</option>
+                </select>
+              </div>
+              <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()"
+                [disabled]="i < attemptArr.length - 1">check</button>
             </div>
-            <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()" [disabled] = "i != attemptArr.length - 1" >check</button>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
@@ -53,11 +98,36 @@
   </div>
   <div *ngIf="isTargetshown">The answer is: [{{target}}]</div>
   <div class="col-4">
-    <p (click)="hintsClicked()" *ngIf="!error">*Hints</p>
+    <button class="btn btn-sm btn-primary" (click)="hintsClicked()" *ngIf="!error">*Hints</button>
     <ul *ngIf="isHintsClicked">
       <li>Sum of total digitis is {{hints.sumDigit}}</li>
       <li>The 1st digit is {{hints.isFirstEven === true ? 'even' : 'odd'}}</li>
-      <li>The 3rd digit is {{hints.isThirdDivisibleByThree == true ? '' : 'not'}} divisible by 3 </li>
+      <li>The 3rd digit is {{hints.isThirdDivisibleByThree === true ? '' : 'not'}} divisible by 3 </li>
     </ul>
   </div>
+  <!-- <button type="submit" (click)="showTopGame()">Top Game</button>
+
+  <div *ngIf="isTopGameShown">
+    <table class="table table-sm">
+      <thead>
+        <tr class="table-secondary">
+          <th>No.</th>
+          <th>Username</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
+          <td>{{i + 1}}.</td>
+          <td>{{g.key}}</td>
+          <td>{{g.value*1000 | date:'mm:ss'}}</td>
+        </tr>
+        <tr *ngFor="let g of topGame; let i = index">
+          <td>{{i + 1}}.</td>
+          <td>{{g.username}}</td>
+          <td>{{(g.endTime - g.startTime)*1000 | date:'mm:ss'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
 </div>

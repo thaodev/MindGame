@@ -19,7 +19,8 @@ import { Feedback } from 'src/app/models/feedback';
 export class GameComponent implements OnInit {
   @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
   //this.countdown.begin();
-
+  isUsernameInputShown : boolean = true;
+  username: String | any;
   isNewGame: boolean = false;
   min: number = 0;
   max: number = 7;
@@ -29,7 +30,6 @@ export class GameComponent implements OnInit {
   range: number[] = []; //range for 0->7
   minMaxRange: number[] = []; //range for  min and max
   guess: number[] = [];
-  //guess: any = [];
   digits: any = []; //number of boxes based on player's choice
   attemptArr: Attempt[] = []; //number of attempts that player can have
   attemptCount: number = 1;
@@ -42,7 +42,11 @@ export class GameComponent implements OnInit {
   attempt = {} as Attempt;
 
   isHintsClicked: boolean = false;
+  isTopGameShown : boolean = false;
+  duration: number = 0;
 
+  topGameMap : Map<Game,number> = new Map<Game,number>();
+  topGame: Game[] = [];
   target: number[] = [];
   isTargetshown: boolean = false;
 
@@ -50,7 +54,9 @@ export class GameComponent implements OnInit {
   event: any;
   error: string | any;
 
-  config: CountdownConfig = { leftTime: 1100, format: 'm:s' };
+  clickCount: number = 0;
+
+  config: CountdownConfig = { leftTime: 600, format: 'm:s' };
 
   constructor(
     private gameService: GameService,
@@ -59,7 +65,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.isTargetshown = false;
-    this.startGame(this.size);
+    this.startGame(this.username, this.size);
     for (let i = 0; i <= 9; i++) {
       this.minMaxRange.push(i);
     }
@@ -70,11 +76,16 @@ export class GameComponent implements OnInit {
     //this.attemptArr.push(this.attempt);//add 1st object attempt to array
   }
 
+  retrieveUsername(username: string){
+    this.username = username;
+    this.isUsernameInputShown = false;
+    this.startGame(this.username, this.size);
+  }
   counter() {
     console.log('size in counter ' + this.size);
     return new Array(this.size);
   }
-  startGame(size: number) {
+  startGame(username: string, size: number) {
     this.isTargetshown = false;
     this.isNewGame = true;
     this.target =[];
@@ -88,6 +99,8 @@ export class GameComponent implements OnInit {
     this.digits = []; //reset number of boxes after player starting a new game
     this.attemptArr = []; //reset array of attempt after each new game;
     this.attemptArr.push(this.attempt); //add 1st object attempt to array
+
+
     console.log('size after clicking startGame: ' + size);
     if (this.max <= this.min) {
       this.error = 'Max has to be greater than min. Please try again!';
@@ -101,24 +114,21 @@ export class GameComponent implements OnInit {
     }
     this.isHintsClicked = false;
     setTimeout(() => {
-      this.config = { leftTime: 1100, format: 'm:s' };
+      this.config = { leftTime: 600, format: 'm:s' };
       this.countdown.restart();
     }, 0);
   }
 
   retrieveGameId() {
+
     this.gameRequestParam.num = this.size;
     this.gameRequestParam.min = this.min;
     this.gameRequestParam.max = this.max;
+    this.gameRequestParam.username = this.username;
     this.gameService.index(this.gameRequestParam).subscribe({
       next: (gameDTO) => {
         this.gameId = gameDTO.gameId;
-        this.hints = gameDTO.hints;
-        //this.target = game.target;
-        console.log(this.hints);
-        console.log('response from index: ' + this.gameId);
-        // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
-        // console.log(this.gameId.game_id);
+        console.log("game id started " + this.gameId);
       },
       error: (error) => {
         if (error === '400') {
@@ -145,7 +155,7 @@ export class GameComponent implements OnInit {
   checkAttempt() {
     this.attempt = {} as Attempt;
     if (this.guess.length < this.digits.length) {
-      alert('array of guess is incomplete');
+      alert('Not enough numbers input');
     }
 
     console.log('player guess' + this.guess);
@@ -154,7 +164,7 @@ export class GameComponent implements OnInit {
         console.log(result);
         console.log(result.feedback);
         this.feedback = result.feedback;
-        let content = `${result.feedback.numberOfCorrectDigits} correct number and ${result.feedback.numberOfCorrectPos} correct location`;
+        let content = `${result.feedback.numberOfCorrectDigits} correct number(s) and ${result.feedback.numberOfCorrectPos} correct location(s)`;
         if (
           this.feedback.numberOfCorrectPos < this.size &&
           this.attemptArr.length <= 10
@@ -185,12 +195,13 @@ export class GameComponent implements OnInit {
           }
         } else if (this.attemptArr.length >= 11) {
           alert('You lose');
-          this.startGame(this.size);
+          this.startGame(this.username, this.size);
         } else if (result.feedback.numberOfCorrectPos == 4){
           const length = this.attemptArr.length;
           this.attemptArr[length - 1].feedback = result.feedback;
 
           this.attemptArr[length - 1].feedback.content = 'YOU WIN!';
+          this.countdown.stop();
         }
         this.guess = [];
       },
@@ -205,6 +216,24 @@ export class GameComponent implements OnInit {
 
   hintsClicked() {
     this.isHintsClicked = !this.isHintsClicked;
+    this.gameService.retrieveHints(this.gameId).subscribe({
+      next: (hints) => {
+        this.hints = hints;
+       // this.hints.isThirdDivisibleByThree = hints.isThirdDivisibleByThree;
+        console.log("**************")
+        console.log("gameId in the hint" + this.gameId);
+        console.log("third position from result" + hints.isThirdDivisibleByThree);
+        console.log("inside retrieve hints");
+      },
+      error: (error) => {
+        console.error('GameComponent.retrieveHints(): error retrieve hints');
+        console.error(error);
+      },
+    })
+    console.log(this.hints);
+    console.log('response from index: ' + this.gameId);
+    // this.gameId = JSON.parse('{"game_id":"18cb016d-4078-4820-9ee7-210d6e6b6d35"}');
+    // console.log(this.gameId.game_id);
   }
 
   handleEvent(event: CountdownEvent) {
@@ -212,11 +241,36 @@ export class GameComponent implements OnInit {
       this.isNewGame = false;
       setTimeout(() => {
         alert('You lose');
-        this.startGame(this.size);
+        this.startGame(this.username, this.size);
       }, 0);
     }
   }
 
+  showTopGame(){
+    this.isTopGameShown = true;
+    this.gameService.retrieveTopGame().subscribe({
+      next: (result) => {
+        this.topGame = result;
+        console.log(this.topGame);
+        // this.topGameMap.forEach((value, key) =>{
+        //   console.log("key : " + key + " and value is: " + value );
+        // });
+        // this.topGameMap.forEach(function(value,key) {
+        //   console.log(`key is: ${key} and value is: ${value}` );
+        // })
+        //this.duration =
+        // for (const key of result.keys()) {
+        //   console.log(key.username);
+        // }
+
+        console.log("inside showTopGame()");
+      },
+      error: (error) => {
+        console.error('GameComponent.retrieveTopGame(): error retrieve topGame');
+        console.error(error);
+      },
+    })
+  }
   restart(comp: CountdownComponent) {
     comp.restart();
   }

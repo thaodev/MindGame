@@ -7,10 +7,12 @@ public class Player {
 	
 	private String playerId;
 	private String username;
+	private int score;
 	
 	public Player(String username) {
 		this.playerId = UUID.randomUUID().toString();
 		this.username = username;
+		this.score = 10;
 	}
 
 	public String getPlayerId() {
@@ -24,6 +26,14 @@ public class Player {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 	
 	
