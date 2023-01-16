@@ -73,7 +73,7 @@ attached sequence diagram to show application flow
 
 <img />
 
-### Classed used
+### Classes used
 - Controller: handles requests from front end client
 - MainApp: game logic
 - Game: object to manage games of players
@@ -82,3 +82,9 @@ attached sequence diagram to show application flow
 - Feedback: store feedback for each attempt, storing number of correct numbers and number of correct positions
 - GameCreateRequestDTO: store require information to start a new game
 - Hint: object to store hints for each game
+
+### Extensions
+- There is option for users to choose the number of random numbers: 4, 6, or 8
+- Range of random number generated can be more or less than 8 numbers: 0 -> 9
+- There is a countdown timer for each game
+- Hints can be shown when needed
