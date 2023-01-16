@@ -69,9 +69,7 @@ You will have 10 tries/attempts to guess the right numbers and their correct pos
 
 
 ## High level of sequence diagram
-attached sequence diagram to show application flow
-
-<img />
+<img src="src/main/resources/static/diagram.png"/>
 
 ### Classes used
 - Controller: handles requests from front end client
