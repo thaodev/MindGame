@@ -47,19 +47,23 @@
       <option value="8">8</option>
 
     </select>
-    Min: <select name="min" [(ngModel)]="min">
+    <br>
+    <br>
+    Range
+    Lowest: <select name="min" [(ngModel)]="min">
       <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
-    Max: <select name="max" [(ngModel)]="max">
+    Highest: <select name="max" [(ngModel)]="max">
       <option *ngFor="let i of minMaxRange" [value]=i>{{i}}</option>
 
     </select>
     <p class="error" *ngIf="error">{{error}}</p>
+    <br>
     <div><span>&#9200; </span>
       <countdown #cd *ngIf="isNewGame" [config]="config" (event)="handleEvent($event)"></countdown>
     </div>
-    <div>Remaining guesses: {{11 - attemptArr.length}}</div>
+    <div>Remaining guesses: {{10 - attemptArr.length}}</div>
     <button type="submit" class="btn btn-primary d-flex justify-content-end" (click)="startGame(username, size) ">Start
       a new
       game</button>
@@ -67,8 +71,8 @@
     <table class="table table-sm">
       <thead>
         <tr class="table-warning">
-          <th>Attempt</th>
-          <th>Feedbacks</th>
+          <th>Attempts</th>
+          <th>Feedback</th>
         </tr>
       </thead>
       <tbody>
@@ -82,7 +86,7 @@
               </select>
             </div>
             <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()"
-              [disabled]="i != attemptArr.length - 1">check</button>
+              [disabled]="i < attemptArr.length - 1">check</button>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
@@ -111,10 +115,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
+        <!-- <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
           <td>{{i + 1}}.</td>
-          <td>{{g.key.username}}</td>
+          <td>{{g.key}}</td>
           <td>{{g.value*1000 | date:'mm:ss'}}</td>
+        </tr> -->
+        <tr *ngFor="let g of topGame; let i = index">
+          <td>{{i + 1}}.</td>
+          <td>{{g.username}}</td>
+          <td>{{(g.endTime - g.startTime)*1000 | date:'mm:ss'}}</td>
         </tr>
       </tbody>
     </table>

@@ -18,9 +18,9 @@ import com.mindGame.model.Hint;
 @Component
 public class MainApp {
 
-	private static List<Game> listOfGames = new ArrayList<>();
+	private List<Game> listOfGames = new ArrayList<>();
 
-	private static Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
+	private Map<Game, List<Attempt>> recordOfAttempts = new HashMap<>();
 
 	public Game createGame(String username, int[] digits) {
 		Game newGame = new Game(username, digits);
@@ -46,7 +46,6 @@ public class MainApp {
 		for (Game g : listOfGames) {
 			if (g.getGameId().equals(gameId)) {
 				target = g.getTarget();
-				// System.out.println("Target is:" + Arrays.toString(target));
 				game = g;
 			}
 		}
@@ -78,11 +77,17 @@ public class MainApp {
 		}
 		// Get number of past attempts by game id
 		// Else If the number of attempt reach max allowed
-		if (recordOfAttempts.get(game).size() >= 10) {
+		//if player run out of guess and still wrong, tell them lose
+		if (recordOfAttempts.get(game).size() > 10) {
 			numberOfCorrectDigit = -1;
 			numberOfCorrectPos = -1;
 			newAttempt.setTarget(game.getTarget());
 		}
+//		on 10th attempt reveal correct target whether player guess right or wrong
+		if (recordOfAttempts.get(game).size() == 10) {
+			newAttempt.setTarget(game.getTarget());
+		}
+		//they win
 		if (numberOfCorrectPos == game.getTarget().length) {
 			game.setEndTime(java.time.LocalTime.now());
 			System.out.println("end time: " + game.getEndTime());
@@ -104,8 +109,8 @@ public class MainApp {
 		return hints;
 	}
 
-	public Map<Game, Integer> retrieveTopGame() {
-		Map<Game, Integer> topGame = new LinkedHashMap<>();
+	public List<Game> retrieveTopGame() {
+		List<Game> topGame = new ArrayList<>();
 		List<Integer> durations = new ArrayList<>();
 		Map<Game, Integer> unsortedMap = new LinkedHashMap<>();
 		for (Game g : listOfGames) {
@@ -137,10 +142,49 @@ public class MainApp {
 		list.sort(Entry.comparingByValue());
 
 		for (Entry<Game, Integer> entry : list) {
-			topGame.put(entry.getKey(), entry.getValue());
+			topGame.add(entry.getKey());
 		}
 
 		System.out.println("After soring " + list);
 		return topGame;
 	}
+//	public Map<Game, Integer> retrieveTopGame() {
+//		Map<Game, Integer> topGame = new LinkedHashMap<>();
+//		List<Integer> durations = new ArrayList<>();
+//		Map<Game, Integer> unsortedMap = new LinkedHashMap<>();
+//		for (Game g : listOfGames) {
+//			if (g.getEndTime() != null) {
+//				int startTime = g.getStartTime().getHour()*360 + g.getStartTime().getMinute()*60
+//						+ g.getStartTime().getSecond();
+//				System.out.println("converted start time: " + startTime);
+//				int endTime = g.getEndTime().getHour()*360 + g.getEndTime().getMinute()*60 + g.getEndTime().getSecond();
+//				durations.add(endTime - startTime);
+//				System.out.println("duration: " + (endTime - startTime));
+//				unsortedMap.put(g, endTime - startTime);
+//			}
+//			
+//		}
+//		// to test top game sorting
+//		int[] target1 = { 4, 5, 3, 5 };
+//		Game game1 = new Game("Thao", target1);
+//		game1.setGameId("abc123");
+//		unsortedMap.put(game1, 400);
+//		
+//		int[] target2 = { 4, 5, 3, 0 };
+//		Game game2 = new Game("Phuong", target2);
+//		game2.setGameId("abc124");
+//		unsortedMap.put(game2, 300);
+//		
+//		System.out.println("before sorting " + unsortedMap);
+//		
+//		List<Entry<Game, Integer>> list = new ArrayList<>(unsortedMap.entrySet());
+//		list.sort(Entry.comparingByValue());
+//		
+//		for (Entry<Game, Integer> entry : list) {
+//			topGame.put(entry.getKey(), entry.getValue());
+//		}
+//		
+//		System.out.println("After soring " + list);
+//		return topGame;
+//	}
 }

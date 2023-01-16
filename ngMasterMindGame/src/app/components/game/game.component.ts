@@ -54,7 +54,9 @@ export class GameComponent implements OnInit {
   event: any;
   error: string | any;
 
-  config: CountdownConfig = { leftTime: 1100, format: 'm:s' };
+  clickCount: number = 0;
+
+  config: CountdownConfig = { leftTime: 600, format: 'm:s' };
 
   constructor(
     private gameService: GameService,
@@ -112,7 +114,7 @@ export class GameComponent implements OnInit {
     }
     this.isHintsClicked = false;
     setTimeout(() => {
-      this.config = { leftTime: 1100, format: 'm:s' };
+      this.config = { leftTime: 600, format: 'm:s' };
       this.countdown.restart();
     }, 0);
   }
@@ -153,7 +155,7 @@ export class GameComponent implements OnInit {
   checkAttempt() {
     this.attempt = {} as Attempt;
     if (this.guess.length < this.digits.length) {
-      alert('array of guess is incomplete');
+      alert('Not enough numbers input');
     }
 
     console.log('player guess' + this.guess);
@@ -162,7 +164,7 @@ export class GameComponent implements OnInit {
         console.log(result);
         console.log(result.feedback);
         this.feedback = result.feedback;
-        let content = `${result.feedback.numberOfCorrectDigits} correct number and ${result.feedback.numberOfCorrectPos} correct location`;
+        let content = `${result.feedback.numberOfCorrectDigits} correct number(s) and ${result.feedback.numberOfCorrectPos} correct location(s)`;
         if (
           this.feedback.numberOfCorrectPos < this.size &&
           this.attemptArr.length <= 10
@@ -244,8 +246,8 @@ export class GameComponent implements OnInit {
     this.isTopGameShown = true;
     this.gameService.retrieveTopGame().subscribe({
       next: (result) => {
-        this.topGameMap = result;
-        console.log(this.topGameMap);
+        this.topGame = result;
+        console.log(this.topGame);
         // this.topGameMap.forEach((value, key) =>{
         //   console.log("key : " + key + " and value is: " + value );
         // });

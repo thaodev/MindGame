@@ -60,9 +60,9 @@ export class GameService {
       );
   }
 
-  retrieveTopGame(): Observable<Map<Game,number>> {
+  retrieveTopGame(): Observable<Game[]> {
     return this.http
-      .get<Map<Game,number>>(this.url + '/topGame')
+      .get<Game[]>(this.url + '/topGame')
       .pipe(
         catchError((err: any) => {
           console.error(err);
@@ -76,4 +76,20 @@ export class GameService {
         })
       );
   }
+  // retrieveTopGame(): Observable<Map<Game,number>> {
+  //   return this.http
+  //     .get<Map<Game,number>>(this.url + '/topGame')
+  //     .pipe(
+  //       catchError((err: any) => {
+  //         console.error(err);
+  //         return throwError(
+  //           () =>
+  //             new Error(
+  //               'gameService.retrieveTopGame(): error retrieving top games: ' +
+  //                 err
+  //             )
+  //         );
+  //       })
+  //     );
+  // }
 }
