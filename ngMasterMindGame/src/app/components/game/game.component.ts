@@ -128,7 +128,7 @@ export class GameComponent implements OnInit {
     this.gameService.index(this.gameRequestParam).subscribe({
       next: (gameDTO) => {
         this.gameId = gameDTO.gameId;
-
+        console.log("game id started " + this.gameId);
       },
       error: (error) => {
         if (error === '400') {
@@ -219,6 +219,10 @@ export class GameComponent implements OnInit {
     this.gameService.retrieveHints(this.gameId).subscribe({
       next: (hints) => {
         this.hints = hints;
+       // this.hints.isThirdDivisibleByThree = hints.isThirdDivisibleByThree;
+        console.log("**************")
+        console.log("gameId in the hint" + this.gameId);
+        console.log("third position from result" + hints.isThirdDivisibleByThree);
         console.log("inside retrieve hints");
       },
       error: (error) => {

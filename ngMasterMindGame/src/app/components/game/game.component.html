@@ -78,15 +78,17 @@
       <tbody>
         <tr *ngFor="let attempt of attemptArr ; let i = index">
           <td>
-            <div>
-              {{i + 1}}. <select type="number" *ngFor="let box of digits ; let j = index" #box1
-                (blur)="getData(box1.value, j)" name="box">
-                <option value=""></option>
-                <option *ngFor="let i of range" [value]="i">{{i}}</option>
-              </select>
+            <div class="d-flex d-justify-content-start">
+              <div class="mx-3">
+                {{i + 1}}. <select type="number" *ngFor="let box of digits ; let j = index" #box1
+                  (blur)="getData(box1.value, j)" name="box">
+                  <option value=""></option>
+                  <option *ngFor="let i of range" [value]="i">{{i}}</option>
+                </select>
+              </div>
+              <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()"
+                [disabled]="i < attemptArr.length - 1">check</button>
             </div>
-            <button *ngIf="!error" class="btn btn-warning btn-sm" (click)="checkAttempt()"
-              [disabled]="i < attemptArr.length - 1">check</button>
           </td>
           <td *ngIf="attempt?.feedback">{{attempt.feedback.content}}</td>
         </tr>
@@ -96,14 +98,14 @@
   </div>
   <div *ngIf="isTargetshown">The answer is: [{{target}}]</div>
   <div class="col-4">
-    <p (click)="hintsClicked()" *ngIf="!error">*Hints</p>
+    <button class="btn btn-sm btn-primary" (click)="hintsClicked()" *ngIf="!error">*Hints</button>
     <ul *ngIf="isHintsClicked">
       <li>Sum of total digitis is {{hints.sumDigit}}</li>
       <li>The 1st digit is {{hints.isFirstEven === true ? 'even' : 'odd'}}</li>
-      <li>The 3rd digit is {{hints.isThirdDivisibleByThree == true ? '' : 'not'}} divisible by 3 </li>
+      <li>The 3rd digit is {{hints.isThirdDivisibleByThree === true ? '' : 'not'}} divisible by 3 </li>
     </ul>
   </div>
-  <button type="submit" (click)="showTopGame()">Top Game</button>
+  <!-- <button type="submit" (click)="showTopGame()">Top Game</button>
 
   <div *ngIf="isTopGameShown">
     <table class="table table-sm">
@@ -115,11 +117,11 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
+         <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
           <td>{{i + 1}}.</td>
           <td>{{g.key}}</td>
           <td>{{g.value*1000 | date:'mm:ss'}}</td>
-        </tr> -->
+        </tr>
         <tr *ngFor="let g of topGame; let i = index">
           <td>{{i + 1}}.</td>
           <td>{{g.username}}</td>
@@ -127,5 +129,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </div> -->
 </div>

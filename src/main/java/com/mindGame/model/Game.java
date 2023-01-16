@@ -39,7 +39,7 @@ public class Game {
 		hints.setSumDigit(sum);
 		hints.setIsFirstEven(isFirstEven);
 		hints.setIsThirdDivisibleByThree(isThirdDividedByThreeEqually);
-		
+		System.out.println(isThirdDividedByThreeEqually + " " + target[2]);
 		return hints;
 	}
 

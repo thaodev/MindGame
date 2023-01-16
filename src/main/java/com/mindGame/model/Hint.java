@@ -25,7 +25,7 @@ public class Hint {
 	public void setIsFirstEven(boolean isFirstEven) {
 		this.isFirstEven = isFirstEven;
 	}
-	public boolean getIsThirdDivisibleThree() {
+	public boolean getIsThirdDivisibleByThree() {
 		return isThirdDivisibleByThree;
 	}
 	public void setIsThirdDivisibleByThree(boolean isThird) {
