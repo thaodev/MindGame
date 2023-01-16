@@ -5,6 +5,15 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+build
+bin
+default
+.metadata
+.settings
+.gradle
+*.war
+*.bak
+
 ### STS ###
 .apt_generated
 .classpath
