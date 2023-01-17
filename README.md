@@ -3,14 +3,18 @@
 ## Overview
 This is a number guessing game. This application will generate 4 random numbers between 0 and 7. The user is to guess each of the generated number within 10 attempts. The numbers can be repeated within the sequence of 4. The user is notified within 10 attempts whether or not they guessed the sequence of numbers correctly.
 
-#### Sample play:
-<img src="src/main/resources/static/Screen3.png"/>
 
-## How to run
-The game runs on AWS at URL: 8080
+## How to Play
+The game is hosted on AWS at URL: 8080
 The game will ask for how many numbers to guess, as well as the lowest and highest in the randomly generated numbers.
 You will have 10 tries/attempts to guess the right numbers and their correct positions within a 10 minutes time period.
 <br>
+
+#### Sample play:
+<img src="src/main/resources/static/Screen3.png"/>
+
+
+## How to Build and Run Locally
 The game is using Angular for Front End and Java for backend.
 ### 1. Install Required Frameworks and Tools
 #### 1.1. Install Java
@@ -49,7 +53,6 @@ To install front end packages and dependencies
 cd ngMasterMindGame
 npm install --force
 ```
-`
 <img src="src/main/resources/static/npm_install.png"/>
 
 To run front end
