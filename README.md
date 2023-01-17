@@ -2,6 +2,10 @@
 
 ## Overview
 This is a number guessing game. This application will generate 4 random numbers between 0 and 7. The user is to guess each of the generated number within 10 attempts. The numbers can be repeated within the sequence of 4. The user is notified within 10 attempts whether or not they guessed the sequence of numbers correctly.
+
+#### Sample play:
+<img src="src/main/resources/static/Screen3.png"/>
+
 ## How to run
 The game runs on AWS at URL: 8080
 The game will ask for how many numbers to guess, as well as the lowest and highest in the randomly generated numbers.
@@ -36,24 +40,27 @@ cd MindGame
 ```
 mvn spring-boot:run
 ```
+<img src="src/main/resources/static/backend_run.png"/>
 
 ### 4. Build and Run Front End
+To install front end packages and dependencies
+
 ```
 cd ngMasterMindGame
 npm install --force
 ```
-To install front end packages and dependencies
+`
 <img src="src/main/resources/static/npm_install.png"/>
+
+To run front end
 
 ```
 ng serve -o --port=4201
 ```
-To run front end
+
 <img src="src/main/resources/static/ngserve.png"/>
 
 
-#### Sample play:
-<img src="src/main/resources/static/Screen3.png"/>
 
 
 ## Technologies Used
@@ -124,6 +131,6 @@ To run front end
 
 ### Extensions
 - There is option for users to choose the number of random numbers: 4, 6, or 8
-- Range of random number generated can be more or less than 8 numbers: 0 -> 9 instead of from 0->7 as original
+- Set the range of generated random numbers to be more or less than 8 numbers: 0 -> 9 instead of from 0->7 as original
 - There is a countdown timer for each game
 - Hints can be shown when needed
