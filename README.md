@@ -5,7 +5,6 @@ This is a number guessing game. This application will generate 4 random numbers 
 
 
 ## How to Play
-The game is hosted on AWS at URL: 8080
 The game will ask for how many numbers to guess, as well as the lowest and highest in the randomly generated numbers.
 You will have 10 tries/attempts to guess the right numbers and their correct positions within a 10 minutes time period.
 <br>
