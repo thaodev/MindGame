@@ -1,47 +1,25 @@
 <div class="container-fluid">
-  <!-- <div class="row">
-    <div  class="mb-1 col-8">
+  <div class="col-4">
+    <div *ngIf="isUsernameInputShown" class="input-group">
       <div class="input-group-prepend">
         <span class="input-group-text">Enter username</span>
       </div>
-      <input class="form-control" type="text" size="30"  required name="description" [(ngModel)]="username"
+      <input class="form-control" type="text" size="20" required name="description" [(ngModel)]="username"
         placeholder="Enter username" />
-        <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
+      <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
     </div>
-    <div class="col-4">{{username}}</div>
-  </div> -->
-  <!-- <div class="row">
-    <div class="col">
-      <form class="form-inline">
-        <div class="form-group mx-sm-3 mb-2">
-          Enter username: <input type="password" class="form-control" placeholder="Enter username">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
-      </form>
-    </div>
-    <div class="col">{{username}}</div>
-  </div> -->
-  <div class="row">
-    <div class="col-8">
-      <div *ngIf="isUsernameInputShown" class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Enter username</span>
-        </div>
-        <input class="form-control" type="text" size="30" required name="description" [(ngModel)]="username"
-          placeholder="Enter username" />
-        <button type="button" class="btn btn-sm btn-secondary" (click)="retrieveUsername(username)">Submit</button>
-      </div>
-      <div *ngIf="!isUsernameInputShown"><button type="button" class="btn btn-sm btn-secondary"
-          (click)="isUsernameInputShown = true">New Player</button></div>
-    </div>
-
-    <div class="col-4">
-      Player {{username}}
-    </div>
+    <div *ngIf="!isUsernameInputShown"><button type="button" class="btn btn-sm btn-secondary"
+        (click)="isUsernameInputShown = true">New Player</button></div>
+  </div>
+  <br>
+  <div *ngIf="username">
+    <h3 >
+      Hello {{username}}!
+    </h3>
   </div>
   <br>
   <div class="col-8">
-    Number of digits: <select name="size" [(ngModel)]="size">
+    Please enter number of digits: <select name="size" [(ngModel)]="size">
       <option value="4">4</option>
       <option value="6">6</option>
       <option value="8">8</option>
