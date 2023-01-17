@@ -62,10 +62,7 @@ public class Controller {
 			} else {
 				int[] target = getTargetNumbers(gameRes.getNum(), gameRes.getMin(), gameRes.getMax());
 				game = ul.createGame(gameRes.getUsername(), target);
-				game.setStartTime(java.time.LocalTime.now());
-				
-				System.out.println("start time: " + game.getStartTime());
-				gameDTO = new GameDTO(game.getUsername(), game.getGameId(), game.getStartTime());
+				gameDTO = new GameDTO(game.getUsername(), game.getGameId());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,45 +93,6 @@ public class Controller {
 
 	}
 
-	@GetMapping("games/topGame")
-	public List<GameDTO> retrieveTopGame(HttpServletResponse res) {
-		List<GameDTO> topGame = new ArrayList<>();
-		GameDTO gDTO = null;
-		try {
-			List<Game> listOfTopGames = ul.retrieveTopGame();
-			System.out.println(listOfTopGames);
-			for (Game g : listOfTopGames) {
-				System.out.println(g.getEndTime());
-				gDTO = new GameDTO(g.getUsername(), g.getGameId(), g.getStartTime());
-				gDTO.setEndTime(g.getEndTime());
-				System.out.println(gDTO.getEndTime());
-				topGame.add(gDTO);
-			}
-		} catch (Exception e) {
-			res.setStatus(400);
-		}
-		System.out.println("inside top game controller");
-		System.out.println(topGame);
-		return topGame;
-	}
-//	@GetMapping("games/topGame")
-//	private Map<GameDTO,Integer> retrieveTopGame(HttpServletResponse res) {
-//		Map<GameDTO, Integer> topGame = new LinkedHashMap<>();
-//		Game g = null;
-//		GameDTO gDTO = null;
-//		try {
-//			Map<Game, Integer> listOfTopGames = ul.retrieveTopGame();
-//			for (Map.Entry<Game, Integer> entry : listOfTopGames.entrySet()) {
-//				g = entry.getKey();
-//				gDTO = new GameDTO(g.getUsername(), g.getGameId(), g.getStartTime());
-//				topGame.put(gDTO, entry.getValue());
-//			}
-//		} catch (Exception e) {
-//			res.setStatus(400);
-//		}
-//		System.out.println("inside top game controller");
-//		System.out.println(topGame);
-//		return topGame;
-//	}
+
 
 }
