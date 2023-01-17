@@ -11,7 +11,7 @@ You will have 10 tries/attempts to guess the right numbers and their correct pos
 <br>
 
 #### Sample play:
-<img src="src/main/resources/static/Screen3.png"/>
+<img src="src/main/resources/static/sample_play.png"/>
 
 
 ## How to Build and Run Locally
