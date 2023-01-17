@@ -7,6 +7,50 @@ The game runs on AWS at URL: 8080
 The game will ask for how many numbers to guess, as well as the lowest and highest in the randomly generated numbers.
 You will have 10 tries/attempts to guess the right numbers and their correct positions within a 10 minutes time period.
 <br>
+The game is using Angular for Front End and Java for backend.
+### 1. Install Required Frameworks and Tools
+#### 1.1. Install Java
+Follow Java installation guide from Oracle:
+https://docs.oracle.com/en/java/javase/15/install/installation-jdk-macos.html
+#### 1.2. Install Maven
+```
+brew install maven
+```
+#### 1.3. Install Node
+```
+brew install node
+```
+#### 1.4. Install Angular CLI
+```
+npm install -g @angular/cli
+```
+
+### 2. Clone source code
+
+```
+git clone https://github.com/thaodev/MindGame.git
+cd MindGame
+```
+
+### 3. Build and Run Backend
+```
+mvn spring-boot:run
+```
+
+### 4. Build and Run Front End
+```
+cd ngMasterMindGame
+npm install --force
+```
+To install front end packages and dependencies
+<img src="src/main/resources/static/npm_install.png"/>
+
+```
+ng serve -o --port=4201
+```
+To run front end
+<img src="src/main/resources/static/ngserve.png"/>
+
 
 #### Sample play:
 <img src="src/main/resources/static/Screen3.png"/>
