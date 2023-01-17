@@ -78,34 +78,10 @@
   <div class="col-4">
     <button class="btn btn-sm btn-primary" (click)="hintsClicked()" *ngIf="!error">*Hints</button>
     <ul *ngIf="isHintsClicked">
-      <li>Sum of total digitis is {{hints.sumDigit}}</li>
+      <li>Sum of total digits is {{hints.sumDigit}}</li>
       <li>The 1st digit is {{hints.isFirstEven === true ? 'even' : 'odd'}}</li>
       <li>The 3rd digit is {{hints.isThirdDivisibleByThree === true ? '' : 'not'}} divisible by 3 </li>
     </ul>
   </div>
-  <!-- <button type="submit" (click)="showTopGame()">Top Game</button>
 
-  <div *ngIf="isTopGameShown">
-    <table class="table table-sm">
-      <thead>
-        <tr class="table-secondary">
-          <th>No.</th>
-          <th>Username</th>
-          <th>Duration</th>
-        </tr>
-      </thead>
-      <tbody>
-         <tr *ngFor="let g of topGameMap | keyvalue; let i = index">
-          <td>{{i + 1}}.</td>
-          <td>{{g.key}}</td>
-          <td>{{g.value*1000 | date:'mm:ss'}}</td>
-        </tr>
-        <tr *ngFor="let g of topGame; let i = index">
-          <td>{{i + 1}}.</td>
-          <td>{{g.username}}</td>
-          <td>{{(g.endTime - g.startTime)*1000 | date:'mm:ss'}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div> -->
 </div>

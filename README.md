@@ -13,6 +13,8 @@ You will have 10 tries/attempts to guess the right numbers and their correct pos
 #### Sample play:
 <img src="src/main/resources/static/sample_play.png"/>
 
+[![MasterMind Game](https://cdn.loom.com/sessions/thumbnails/d9db36fc0c124164b1c92138a37959cb-with-play.gif)](https://www.loom.com/share/d9db36fc0c124164b1c92138a37959cb "MasterMind Game")
+
 
 ## How to Build and Run Locally
 The game is using Angular for Front End and Java for backend.
