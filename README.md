@@ -7,10 +7,8 @@ The game runs on AWS at URL: 8080
 The game will ask for how many numbers to guess, as well as the lowest and highest in the randomly generated numbers.
 You will have 10 tries/attempts to guess the right numbers and their correct positions within a 10 minutes time period.
 <br>
-#### Sample output:
-<img src="src/main/resources/static/Screen4.png"/>
 
-#### Sample a play:
+#### Sample play:
 <img src="src/main/resources/static/Screen3.png"/>
 
 
@@ -26,7 +24,6 @@ You will have 10 tries/attempts to guess the right numbers and their correct pos
 <li>RESTful Services</li>
 <li>SpringToolSuite4</li>
 <li>Spring Boot</li>
-<li>Spring MVC</li>
 <li>JSON</li>
 </ul>
 
@@ -83,6 +80,6 @@ You will have 10 tries/attempts to guess the right numbers and their correct pos
 
 ### Extensions
 - There is option for users to choose the number of random numbers: 4, 6, or 8
-- Range of random number generated can be more or less than 8 numbers: 0 -> 9
+- Range of random number generated can be more or less than 8 numbers: 0 -> 9 instead of from 0->7 as original
 - There is a countdown timer for each game
 - Hints can be shown when needed
